@@ -13,6 +13,8 @@ namespace Hydra.Models
 
 		public Employee Seller { get; set; }
 
-		public PaymentType PaymentType { get; set; }
+        public Customer Buyer { get; set; }
+
+        public PaymentType PaymentType { get; set; }
 	}
 }
