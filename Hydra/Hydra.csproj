@@ -5,9 +5,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180826093502_ProdductMigration.cs" />
+    <Compile Remove="Migrations\20180826093502_ProdductMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826100526_ProdductMigration.cs" />
+    <Compile Remove="Migrations\20180826100526_ProdductMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826101114_Migration.cs" />
+    <Compile Remove="Migrations\20180826101114_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20180826101451_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180826101451_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826102018_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180826102018_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826102410_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180826102410_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826102939_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180826102939_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826103100_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180826103100_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826103217_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180826103217_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180826103726_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180826103726_HydraMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
