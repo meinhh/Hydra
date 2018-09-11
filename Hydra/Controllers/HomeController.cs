@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Hydra.Models;
-using Hydra.Data;
-using Microsoft.EntityFrameworkCore;
-using Hydra.DAL;
 
 namespace Hydra.Controllers
 {
@@ -52,32 +45,32 @@ namespace Hydra.Controllers
         //        Price = 3.5
         //    };
 
-            var customer = new User
-            {
-                Address = "somewhere over the rainbow",
-                Name = "Toto",
-                Phone = "0541112312"
-            };
+        //    var customer = new User
+        //    {
+        //        Address = "somewhere over the rainbow",
+        //        Name = "Toto",
+        //        Phone = "0541112312"
+        //    };
 
-            var order = new Order
-            {
-                Buyer = customer,
-                ProductsInStore = new List<ProductInStore> { new ProductInStore { Product = product1, Quantity = 2 } },
-                Date = DateTime.Now,
-                PaymentType = PaymentType.Bitcoin,
-            };
+        //    var order = new Order
+        //    {
+        //        Buyer = customer,
+        //        ProductsInStore = new List<ProductInStore> { new ProductInStore { Product = product1, Quantity = 2 } },
+        //        Date = DateTime.Now,
+        //        PaymentType = PaymentType.Bitcoin,
+        //    };
 
-            var store = new Store
-            {
-                Address = "israel",
-                Orders = new List<Order> { order },
-                Stock = new List<Stock> { new Stock { Product = product1, Quantity = 666 } }
-            };
+        //    var store = new Store
+        //    {
+        //        Address = "israel",
+        //        Orders = new List<Order> { order },
+        //        Stock = new List<Stock> { new Stock { Product = product1, Quantity = 666 } }
+        //    };
 
         //    _hydraContext.Add(product1);
         //    _hydraContext.Add(product2);
         //    _storeDataAccess.AddStore(store);
         //    _hydraContext.SaveChanges();
         //}
-    }
+}
 }
