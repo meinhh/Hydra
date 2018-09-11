@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hydra.Migrations
 {
     [DbContext(typeof(HydraContext))]
-    [Migration("20180826104205_HydraMigration")]
+    [Migration("20180911131008_HydraMigration")]
     partial class HydraMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,44 +20,6 @@ namespace Hydra.Migrations
                 .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Hydra.Models.Customer", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Phone");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("Hydra.Models.Employee", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Phone");
-
-                    b.Property<int?>("StoreID");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("StoreID");
-
-                    b.ToTable("Employee");
-                });
 
             modelBuilder.Entity("Hydra.Models.Order", b =>
                 {
@@ -71,15 +33,11 @@ namespace Hydra.Migrations
 
                     b.Property<int>("PaymentType");
 
-                    b.Property<int?>("SellerID");
-
                     b.Property<int?>("StoreID");
 
                     b.HasKey("ID");
 
                     b.HasIndex("BuyerID");
-
-                    b.HasIndex("SellerID");
 
                     b.HasIndex("StoreID");
 
@@ -94,19 +52,53 @@ namespace Hydra.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("OrderID");
-
                     b.Property<double>("Price");
 
-                    b.Property<int?>("StoreID");
+                    b.HasKey("ID");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("Hydra.Models.ProductInStore", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("OrderID");
+
+                    b.Property<int?>("ProductID");
+
+                    b.Property<int>("Quantity");
 
                     b.HasKey("ID");
 
                     b.HasIndex("OrderID");
 
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductInStore");
+                });
+
+            modelBuilder.Entity("Hydra.Models.Stock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ProductID");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int?>("StoreID");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductID");
+
                     b.HasIndex("StoreID");
 
-                    b.ToTable("Product");
+                    b.ToTable("Stock");
                 });
 
             modelBuilder.Entity("Hydra.Models.Store", b =>
@@ -122,38 +114,55 @@ namespace Hydra.Migrations
                     b.ToTable("Store");
                 });
 
-            modelBuilder.Entity("Hydra.Models.Employee", b =>
+            modelBuilder.Entity("Hydra.Models.User", b =>
                 {
-                    b.HasOne("Hydra.Models.Store", "Store")
-                        .WithMany("Employees")
-                        .HasForeignKey("StoreID")
-                        .HasConstraintName("EMPLOYEE_STORE_FK")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address");
+
+                    b.Property<bool>("IsManager");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Hydra.Models.Order", b =>
                 {
-                    b.HasOne("Hydra.Models.Customer", "Buyer")
+                    b.HasOne("Hydra.Models.User", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerID");
-
-                    b.HasOne("Hydra.Models.Employee", "Seller")
-                        .WithMany()
-                        .HasForeignKey("SellerID");
 
                     b.HasOne("Hydra.Models.Store")
                         .WithMany("Orders")
                         .HasForeignKey("StoreID");
                 });
 
-            modelBuilder.Entity("Hydra.Models.Product", b =>
+            modelBuilder.Entity("Hydra.Models.ProductInStore", b =>
                 {
                     b.HasOne("Hydra.Models.Order")
-                        .WithMany("Products")
+                        .WithMany("ProductsInStore")
                         .HasForeignKey("OrderID");
 
+                    b.HasOne("Hydra.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID");
+                });
+
+            modelBuilder.Entity("Hydra.Models.Stock", b =>
+                {
+                    b.HasOne("Hydra.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID");
+
                     b.HasOne("Hydra.Models.Store")
-                        .WithMany("Products")
+                        .WithMany("Stock")
                         .HasForeignKey("StoreID");
                 });
 #pragma warning restore 612, 618

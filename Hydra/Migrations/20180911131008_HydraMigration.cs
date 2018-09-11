@@ -9,18 +9,17 @@ namespace Hydra.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Product",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true)
+                    Price = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.ID);
+                    table.PrimaryKey("PK_Product", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,25 +36,46 @@ namespace Hydra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employee",
+                name: "User",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    StoreID = table.Column<int>(nullable: true),
                     Address = table.Column<string>(nullable: true),
-                    Phone = table.Column<string>(nullable: true)
+                    Phone = table.Column<string>(nullable: true),
+                    IsManager = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employee", x => x.ID);
+                    table.PrimaryKey("PK_User", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stock",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ProductID = table.Column<int>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
+                    StoreID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stock", x => x.Id);
                     table.ForeignKey(
-                        name: "EMPLOYEE_STORE_FK",
+                        name: "FK_Stock_Product_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Product",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Stock_Store_StoreID",
                         column: x => x.StoreID,
                         principalTable: "Store",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -65,7 +85,6 @@ namespace Hydra.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTime>(nullable: false),
-                    SellerID = table.Column<int>(nullable: true),
                     BuyerID = table.Column<int>(nullable: true),
                     PaymentType = table.Column<int>(nullable: false),
                     StoreID = table.Column<int>(nullable: true)
@@ -74,15 +93,9 @@ namespace Hydra.Migrations
                 {
                     table.PrimaryKey("PK_Order", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Order_Customer_BuyerID",
+                        name: "FK_Order_User_BuyerID",
                         column: x => x.BuyerID,
-                        principalTable: "Customer",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Order_Employee_SellerID",
-                        column: x => x.SellerID,
-                        principalTable: "Employee",
+                        principalTable: "User",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -94,37 +107,31 @@ namespace Hydra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                name: "ProductInStore",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false),
-                    OrderID = table.Column<int>(nullable: true),
-                    StoreID = table.Column<int>(nullable: true)
+                    ProductID = table.Column<int>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false),
+                    OrderID = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.ID);
+                    table.PrimaryKey("PK_ProductInStore", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Product_Order_OrderID",
+                        name: "FK_ProductInStore_Order_OrderID",
                         column: x => x.OrderID,
                         principalTable: "Order",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Product_Store_StoreID",
-                        column: x => x.StoreID,
-                        principalTable: "Store",
+                        name: "FK_ProductInStore_Product_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Product",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employee_StoreID",
-                table: "Employee",
-                column: "StoreID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_BuyerID",
@@ -132,39 +139,47 @@ namespace Hydra.Migrations
                 column: "BuyerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_SellerID",
-                table: "Order",
-                column: "SellerID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Order_StoreID",
                 table: "Order",
                 column: "StoreID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_OrderID",
-                table: "Product",
+                name: "IX_ProductInStore_OrderID",
+                table: "ProductInStore",
                 column: "OrderID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_StoreID",
-                table: "Product",
+                name: "IX_ProductInStore_ProductID",
+                table: "ProductInStore",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stock_ProductID",
+                table: "Stock",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stock_StoreID",
+                table: "Stock",
                 column: "StoreID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "ProductInStore");
+
+            migrationBuilder.DropTable(
+                name: "Stock");
 
             migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Store");

@@ -61,14 +61,7 @@ namespace Hydra.Controllers
                 Price = 3.5
             };
 
-            var employee = new Employee
-            {
-                Address = "somewhere on the beach",
-                Name = "Direkes Bently",
-                Phone = "0524113698"
-            };
-
-            var customer = new Customer
+            var customer = new User
             {
                 Address = "somewhere over the rainbow",
                 Name = "Toto",
@@ -78,18 +71,16 @@ namespace Hydra.Controllers
             var order = new Order
             {
                 Buyer = customer,
-                Products = new List<Product> { product1 },
+                ProductsInStore = new List<ProductInStore> { new ProductInStore { Product = product1, Quantity = 2 } },
                 Date = DateTime.Now,
                 PaymentType = PaymentType.Bitcoin,
-                Seller = employee
             };
 
             var store = new Store
             {
                 Address = "israel",
-                Employees = new List<Employee> { employee },
                 Orders = new List<Order> { order },
-                Products = new List<Product> { product1 }
+                Stock = new List<Stock> { new Stock { Product = product1, Quantity = 666 } }
             };
 
             _hydraContext.Add(product1);

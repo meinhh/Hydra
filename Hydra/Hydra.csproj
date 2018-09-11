@@ -25,6 +25,8 @@
     <Compile Remove="Migrations\20180826103217_HydraMigration.Designer.cs" />
     <Compile Remove="Migrations\20180826103726_HydraMigration.cs" />
     <Compile Remove="Migrations\20180826103726_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180911094548_HydraMigration.cs" />
+    <Compile Remove="Migrations\20180911094548_HydraMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,5 +41,7 @@
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
