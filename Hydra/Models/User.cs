@@ -1,6 +1,6 @@
 namespace Hydra.Models
 {
-	public class Customer
+	public class User
 	{
 		public int ID { get; set; }
 
@@ -9,5 +9,7 @@ namespace Hydra.Models
 		public string Address { get; set; }
 
 		public string Phone { get; set; }
-	}
+
+        public bool IsManager { get; set; }
+    }
 }

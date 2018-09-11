@@ -8,10 +8,10 @@ namespace Hydra.Models
 
 		public string Address { get; set; }
 
-		public ICollection<Product> Products { get; set; }
+        //public ICollection<Product> ProductsInStore { get; set; }
 
-		public ICollection<Employee> Employees { get; set; }
+        public ICollection<Stock> Stock { get; set; }
 
-		public ICollection<Order> Orders { get; set; }
+        public ICollection<Order> Orders { get; set; }
 	}
 }

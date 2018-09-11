@@ -7,13 +7,11 @@ namespace Hydra.Models
 	{
 		public int ID { get; set; }
 
-		public ICollection<Product> Products { get; set; }
+		public ICollection<ProductInStore> ProductsInStore { get; set; }
 
 		public DateTime Date { get; set; }
 
-		public Employee Seller { get; set; }
-
-        public Customer Buyer { get; set; }
+        public User Buyer { get; set; }
 
         public PaymentType PaymentType { get; set; }
 	}
