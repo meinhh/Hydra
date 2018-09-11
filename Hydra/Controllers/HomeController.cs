@@ -13,31 +13,22 @@ namespace Hydra.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly HydraContext _hydraContext;
-        private readonly StoreDataAccess _storeDataAccess; // TODO: create a BL class to use the _storeDataAccess
-
-        public HomeController(HydraContext hydraContext)
-        {
-            _hydraContext = hydraContext;
-            _storeDataAccess = new StoreDataAccess(hydraContext);
-        }
-
         public IActionResult Index()
         {
-            HowToUseHydraContext(); // TODO: remove once we have the needed logic
             return View();
         }
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Hail Hydra";
+            ViewData["ShareUrl"] = "https://www.quertime.com/article/how-facebook-steals-sells-your-private-information/";
 
             return View();
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Please Dont Contact Us";
 
             return View();
         }
@@ -47,19 +38,19 @@ namespace Hydra.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private void HowToUseHydraContext() // TODO: remove once we have the needed logic
-        {
-            var product1 = new Product
-            {
-                Name = "Milk",
-                Price = 5.0
-            };
+        //private void HowToUseHydraContext() // TODO: remove once we have the needed logic
+        //{
+        //    var product1 = new Product
+        //    {
+        //        Name = "Milk",
+        //        Price = 5.0
+        //    };
 
-            var product2 = new Product
-            {
-                Name = "Bread",
-                Price = 3.5
-            };
+        //    var product2 = new Product
+        //    {
+        //        Name = "Bread",
+        //        Price = 3.5
+        //    };
 
             var customer = new User
             {
@@ -83,10 +74,10 @@ namespace Hydra.Controllers
                 Stock = new List<Stock> { new Stock { Product = product1, Quantity = 666 } }
             };
 
-            _hydraContext.Add(product1);
-            _hydraContext.Add(product2);
-            _storeDataAccess.AddStore(store);
-            _hydraContext.SaveChanges();
-        }
+        //    _hydraContext.Add(product1);
+        //    _hydraContext.Add(product2);
+        //    _storeDataAccess.AddStore(store);
+        //    _hydraContext.SaveChanges();
+        //}
     }
 }
