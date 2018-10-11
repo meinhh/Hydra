@@ -48,6 +48,12 @@ namespace Hydra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Category");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("ImageUrl");
+
                     b.Property<string>("Name");
 
                     b.Property<double>("Price");
@@ -109,7 +115,15 @@ namespace Hydra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
+                    b.Property<DateTime>("ClosingHour");
+
+                    b.Property<double>("Latitude");
+
+                    b.Property<double>("Lontitude");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("OpeningHour");
 
                     b.HasKey("ID");
 

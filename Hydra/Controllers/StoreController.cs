@@ -136,7 +136,7 @@ namespace Hydra.Controllers
 
             var store = new Store
             {
-                Address = "israel",
+                
                 Orders = new List<Order> { order },
                 Stock = new List<Stock> { new Stock { Product = product1, Quantity = 666 } }
             };
