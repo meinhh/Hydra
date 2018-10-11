@@ -15,7 +15,10 @@ namespace Hydra.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    Price = table.Column<double>(nullable: false)
+                    Price = table.Column<double>(nullable: false),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    Category = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,7 +31,11 @@ namespace Hydra.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Address = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Lontitude = table.Column<double>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false),
+                    OpeningHour = table.Column<DateTime>(nullable: false),
+                    ClosingHour = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

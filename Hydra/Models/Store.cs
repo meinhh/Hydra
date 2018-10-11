@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Hydra.Models
@@ -6,7 +7,15 @@ namespace Hydra.Models
 	{
 		public int ID { get; set; }
 
-		public string Address { get; set; }
+        public string Name { get; set; }
+
+        public double Lontitude { get; set; }
+
+        public double Latitude { get; set; }
+
+        public DateTime OpeningHour { get; set; }
+
+        public DateTime ClosingHour { get; set; }
 
         public ICollection<Stock> Stock { get; set; }
 

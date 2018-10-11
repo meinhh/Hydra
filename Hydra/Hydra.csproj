@@ -33,6 +33,8 @@
     <Compile Remove="Migrations\20180911135721_HydraMigration.Designer.cs" />
     <Compile Remove="Migrations\20180911141304_HydraMigration.cs" />
     <Compile Remove="Migrations\20180911141304_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20181011125745_HydraMigration.cs" />
+    <Compile Remove="Migrations\20181011125745_HydraMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
