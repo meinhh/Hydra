@@ -1,37 +1,57 @@
 ﻿@model Hydra.Models.Product
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Product Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h1>Details</h1>
 
-<div>
-    <h4>Product</h4>
+<div >
+    <h2>Product: @Html.DisplayFor(model => model.Name)</h2>
     <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.ID)
         </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ID)
+        <dd style="font-size:medium; font-family:Helvetica">
+            @Html.DisplayFor(model => model.ID)<br />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
+        <dd style="font-size:medium; font-family:Helvetica">
+            @Html.DisplayFor(model => model.Name)Iron Man<br />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd style="font-size:medium; font-family:Helvetica">
+            @Html.DisplayFor(model => model.Category)<br />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd style="font-size:medium; font-family:Helvetica">
+            @Html.DisplayFor(model => model.Description)<br />
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)$
+        <dd style="font-size:medium; font-family:Helvetica">
+            @Html.DisplayFor(model => model.Price)75₪<br />
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+        <dd style="font-size:medium; font-family:Helvetica">
+            
+            <img src="@Html.DisplayFor(model => model.ImageUrl)" alt="Image" style="height:150px;width:150px" ; />
         </dd>
     </dl>
 </div>
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-controller="Store" asp-action="Index">Back to Store</a>
+    <a asp-controller="Store" asp-action="Index">Back to Store</a> |
+    <a asp-controller="Home" asp-action="Index">Back to Home Page</a>
 </div>
