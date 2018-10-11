@@ -14,7 +14,6 @@ namespace Hydra.Data
 		public DbSet<Product> Product { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<User> User { get; set; }
-        public DbSet<Order> Order { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)

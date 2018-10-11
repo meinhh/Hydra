@@ -107,43 +107,138 @@ namespace Hydra.Controllers
 
         private void HowToUseHydraContext() // TODO: remove once we have the needed logic
         {
-            var product1 = new Product
+            var mickeyMouse = new Product
             {
-                Name = "Milk",
-                Price = 5.0
+                Name = "Mickey Mouse",
+                Category = Category.Disney,
+                Description = "Mickey mouse figure",
+                Price = 95,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/Mickey_POP_GLAM.jpg?v=1510191643"
             };
 
-            var product2 = new Product
+            var batGirl = new Product
             {
-                Name = "Bread",
-                Price = 3.5
+                Name = "Bat Girl",
+                Category = Category.DC,
+                Description = "Bat girl figure",
+                Price = 90,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/13632_BatmanTV_Batgirl_POP_GLAM_HiRes.jpg?v=1490738932"
             };
 
-            var customer = new User
+            var ironMan = new Product
             {
-                Address = "somewhere over the rainbow",
-                Name = "Toto",
-                Phone = "0541112312"
+                Name = "Ironman",
+                Category = Category.Marvel,
+                Description = "Iron man figure",
+                Price = 75,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/26463_AvengersInfinityWar_IronMan_POP_GLAM.png?v=1519854776"
             };
 
-            var order = new Order
+            var allisonHendrix = new Product
             {
-                Buyer = customer,
-                ProductsInStore = new List<ProductInStore> { new ProductInStore { Product = product1, Quantity = 2 } },
-                Date = DateTime.Now,
-                PaymentType = PaymentType.Bitcoin,
+                Name = "Allison Hendrix",
+                Category = Category.TV,
+                Description = "Allison Hendrix figure",
+                Price = 66.5,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/5033_Orphan_Black_Allison_hires.jpg?v=1510191796"
             };
 
-            var store = new Store
+            var freddyKrueger = new Product
             {
-                
-                Orders = new List<Order> { order },
-                Stock = new List<Stock> { new Stock { Product = product1, Quantity = 666 } }
+                Name = "Freddy Krueger",
+                Category = Category.Movies,
+                Description = "Freddy Krueger figure",
+                Price = 70.5,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/FREDDY_POP_GLAM.jpg?v=1510191943"
             };
 
-            _hydraContext.Add(product1);
-            _hydraContext.Add(product2);
-            _storeBl.AddStore(store);
+            var telAviv = new Store
+            {
+                Name = "Tel Aviv Pop",
+                ClosingHour = "22:00",
+                OpeningHour = "12:00",
+                Latitude = 32.074031,
+                Lontitude = 34.792868,
+                Stock = new List<Stock>
+                {
+                    new Stock
+                    {
+                        Product = mickeyMouse,
+                        Quantity = 5
+                    },
+                    new Stock
+                    {
+                        Product = allisonHendrix,
+                        Quantity = 24
+                    }
+                }
+            };
+
+            var jerusalem = new Store
+            {
+                Name = "Jerusalem Pop",
+                ClosingHour = "22:00",
+                OpeningHour = "12:00",
+                Latitude = 31.776555,
+                Lontitude = 35.234390,
+                Stock = new List<Stock>
+                {
+                    new Stock
+                    {
+                        Product = freddyKrueger,
+                        Quantity = 5
+                    },
+                    new Stock
+                    {
+                        Product = mickeyMouse,
+                        Quantity = 5
+                    },
+                    new Stock
+                    {
+                        Product = ironMan,
+                        Quantity = 12
+                    }
+                }
+            };
+
+            var eilat = new Store
+            {
+                Name = "Eilat Pop",
+                ClosingHour = "22:00",
+                OpeningHour = "12:00",
+                Latitude = 29.556008,
+                Lontitude = 34.961806,
+                Stock = new List<Stock>
+                {
+                    new Stock
+                    {
+                        Product = mickeyMouse,
+                        Quantity = 125
+                    }
+                }
+            };
+
+            var meirav = new User
+            {
+                email = "meinhh@gmail.com",
+                BirthDate = new DateTime(1996, 7, 4),
+                Gender = Gender.Female,
+                IsManager = true,
+                Name = "Meirav Shenhar"
+            };
+
+            var gal = new User
+            {
+                email = "galhen400@gmail.com",
+                BirthDate = new DateTime(1996, 2, 19),
+                Gender = Gender.Male,
+                IsManager = true,
+                Name = "Gal Hen"
+            };
+
+            _hydraContext.User.AddRange(meirav, gal);
+            _hydraContext.Store.AddRange(telAviv, jerusalem, eilat);
+
             _hydraContext.SaveChanges();
         }
     }
