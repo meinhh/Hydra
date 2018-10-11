@@ -69,11 +69,15 @@ namespace Hydra.Migrations
 
                     b.Property<int>("Quantity");
 
+                    b.Property<int?>("StoreID");
+
                     b.HasKey("ID");
 
                     b.HasIndex("OrderID");
 
                     b.HasIndex("ProductID");
+
+                    b.HasIndex("StoreID");
 
                     b.ToTable("ProductInStore");
                 });
@@ -151,6 +155,10 @@ namespace Hydra.Migrations
                     b.HasOne("Hydra.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID");
+
+                    b.HasOne("Hydra.Models.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreID");
                 });
 
             modelBuilder.Entity("Hydra.Models.Stock", b =>

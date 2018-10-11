@@ -113,6 +113,7 @@ namespace Hydra.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ProductID = table.Column<int>(nullable: true),
+                    StoreID = table.Column<int>(nullable: true),
                     Quantity = table.Column<int>(nullable: false),
                     OrderID = table.Column<int>(nullable: true)
                 },
@@ -129,6 +130,12 @@ namespace Hydra.Migrations
                         name: "FK_ProductInStore_Product_ProductID",
                         column: x => x.ProductID,
                         principalTable: "Product",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductInStore_Store_StoreID",
+                        column: x => x.StoreID,
+                        principalTable: "Store",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -152,6 +159,11 @@ namespace Hydra.Migrations
                 name: "IX_ProductInStore_ProductID",
                 table: "ProductInStore",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductInStore_StoreID",
+                table: "ProductInStore",
+                column: "StoreID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stock_ProductID",

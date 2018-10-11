@@ -19,17 +19,28 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Address)
                 </th>
-            <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Stock)
+                </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var store in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ID)
+                @Html.DisplayFor(modelItem => store.ID)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                @Html.DisplayFor(modelItem => store.Address)
+            </td>
+            <td>
+                @foreach(var productInStore in store.Stock)
+                {
+                <div>
+                    <p>There are @productInStore.Quantity of @Html.ActionLink(@productInStore.Product.Name, "Details", "Product", new { id = @productInStore.Product.ID })</p>
+                </div>
+
+                }
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
