@@ -22,5 +22,10 @@ namespace Hydra.BL
             return _storeDataAccess.GetAllStores();
         }
 
+        public void AddStore(Store store)
+        {
+            _storeDataAccess.AddStore(store);
+        }
+
     }
 }

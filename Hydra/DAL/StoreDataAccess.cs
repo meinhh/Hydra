@@ -19,6 +19,7 @@ namespace Hydra.DAL
         {
             return _hydraContext.Store
                 .Include(x => x.Stock)
+                .ThenInclude(y => y.Product)
                 .Include(x => x.Orders)
                 .ToList();
         }
