@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Hydra.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Data.SqlClient;
 
 namespace Hydra
 {
@@ -25,16 +26,24 @@ namespace Hydra
 		{
 			services.AddMvc();
 
-			services.AddDbContext<HydraContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("HydraContext")));
-		}
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("HydraContext"))
+            {
+                Password = Configuration["Secret:DbPassword"]
+            };
+            services.AddDbContext<HydraContext>(options =>
+                                                options.UseSqlServer(builder.ConnectionString));
+                                             
+            services.AddSingleton<ISecretSettings>(
+                new SecretSettings(Configuration["Secret:MapCredantials"], 
+                                   Configuration["Secret:DbPassword"]));
+        }
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{ 
 			if (env.IsDevelopment())
 			{
-				app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage();
 			}
 			else
 			{
@@ -43,7 +52,13 @@ namespace Hydra
 
 			app.UseStaticFiles();
 
-			app.UseMvc(routes =>
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
+            app.UseMvc(routes =>
 			{
 				routes.MapRoute(
 					name: "default",

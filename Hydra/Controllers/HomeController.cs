@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hydra.Models;
 using Hydra.BL;
 using Hydra.Data;
+using Microsoft.Extensions.Options;
 
 namespace Hydra.Controllers
 {
@@ -20,7 +21,7 @@ namespace Hydra.Controllers
             return View(_productBl.GetAllProducts());
         }
 
-        public IActionResult About()
+        public IActionResult About([FromServices]ISecretSettings secrets)
         {
             ViewData["Message"] = "Hail Hydra";
             ViewData["ShareUrl"] = "https://www.quertime.com/article/how-facebook-steals-sells-your-private-information/";
