@@ -5,8 +5,7 @@ const distanceUnits = 'km',
 function getMap() {
     map = new Microsoft.Maps.Map('#store-locations-map', {
         zoom: 18,
-        center: new Microsoft.Maps.Location(32.078863, 34.794393),
-        credentials: 'At6J9we1ewqy6CMpkIpcxCYCkTK_fzwfXcM5S1Yx_lU_WVNxG4QtsgSupnMFpHlS'
+        center: new Microsoft.Maps.Location(32.078863, 34.794393)
     });
     dataLayer = new Microsoft.Maps.Layer();
     Microsoft.Maps.Events.addHandler(dataLayer, 'click', (e => displayInfobox(e.primitive)));

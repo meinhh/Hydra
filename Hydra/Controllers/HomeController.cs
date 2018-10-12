@@ -25,6 +25,7 @@ namespace Hydra.Controllers
         {
             ViewData["Message"] = "Hail Hydra";
             ViewData["ShareUrl"] = "https://www.quertime.com/article/how-facebook-steals-sells-your-private-information/";
+            ViewData["MapCredantials"] = secrets.MapCredantials;
 
             return View();
         }
