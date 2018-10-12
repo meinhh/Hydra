@@ -1,14 +1,23 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Hydra.Models;
+using Hydra.BL;
+using Hydra.Data;
 
 namespace Hydra.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ProductBl _productBl;
+
+        public HomeController(HydraContext hydraContext)
+        {
+            _productBl = new ProductBl(hydraContext);
+        }
+
         public IActionResult Index()
         {
-            return View();
+            return View(_productBl.GetAllProducts());
         }
 
         public IActionResult About()
