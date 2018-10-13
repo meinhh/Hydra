@@ -21,15 +21,6 @@ namespace Hydra.Controllers
             return View(_productBl.GetAllProducts());
         }
 
-        public IActionResult About([FromServices]ISecretSettings secrets)
-        {
-            ViewData["Message"] = "Hail Hydra";
-            ViewData["ShareUrl"] = "https://www.quertime.com/article/how-facebook-steals-sells-your-private-information/";
-            ViewData["MapCredantials"] = secrets.MapCredantials;
-
-            return View();
-        }
-
         public IActionResult Contact()
         {
             ViewData["Message"] = "Please Dont Contact Us";

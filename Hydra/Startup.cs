@@ -35,7 +35,8 @@ namespace Hydra
                                              
             services.AddSingleton<ISecretSettings>(
                 new SecretSettings(Configuration["Secret:MapCredantials"], 
-                                   Configuration["Secret:DbPassword"]));
+                                   Configuration["Secret:DbPassword"],
+                                   Configuration["Secret:WeatherKey"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
