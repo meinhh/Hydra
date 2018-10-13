@@ -1,20 +1,31 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Hydra.Models;
+using Hydra.BL;
+using Hydra.Data;
+using Microsoft.Extensions.Options;
 
 namespace Hydra.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly ProductBl _productBl;
+
+        public HomeController(HydraContext hydraContext)
         {
-            return View();
+            _productBl = new ProductBl(hydraContext);
         }
 
-        public IActionResult About()
+        public IActionResult Index()
+        {
+            return View(_productBl.GetAllProducts());
+        }
+
+        public IActionResult About([FromServices]ISecretSettings secrets)
         {
             ViewData["Message"] = "Hail Hydra";
             ViewData["ShareUrl"] = "https://www.quertime.com/article/how-facebook-steals-sells-your-private-information/";
+            ViewData["MapCredantials"] = secrets.MapCredantials;
 
             return View();
         }
