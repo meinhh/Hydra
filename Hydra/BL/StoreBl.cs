@@ -1,10 +1,7 @@
 ﻿using Hydra.DAL;
 using Hydra.Data;
 using Hydra.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Hydra.BL
 {
@@ -20,6 +17,11 @@ namespace Hydra.BL
         public List<Store> GetAllStores()
         {
             return _storeDataAccess.GetAllStores();
+        }
+
+        public IEnumerable<Store> GetStoreByName(string name)
+        {
+            return _storeDataAccess.GetStoreByName(name);
         }
 
         public void AddStore(Store store)
