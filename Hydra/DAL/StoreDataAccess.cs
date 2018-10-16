@@ -23,6 +23,13 @@ namespace Hydra.DAL
                 .ToList();
         }
 
+        public IEnumerable<Store> GetStoreByName(string name)
+        {
+            return _hydraContext.Store
+                                .Where(s => s.Name.Contains(name))
+                                .ToList();
+        }
+
         public Store GetStroeById(int storeId)
         {
             return _hydraContext.Store

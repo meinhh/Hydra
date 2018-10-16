@@ -4,6 +4,7 @@ using Hydra.Models;
 using Hydra.BL;
 using Hydra.Data;
 using System;
+using Microsoft.Extensions.Options;
 
 namespace Hydra.Controllers
 {
@@ -20,14 +21,6 @@ namespace Hydra.Controllers
         {
             ViewBag.Categories = Enum.GetValues(typeof(Category));
             return View(_productBl.GetAllProducts());
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Hydra pop!";
-            ViewData["ShareUrl"] = "https://www.quertime.com/article/how-facebook-steals-sells-your-private-information/";
-
-            return View();
         }
 
         public IActionResult Contact()
