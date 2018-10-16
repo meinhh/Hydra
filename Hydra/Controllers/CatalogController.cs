@@ -13,13 +13,16 @@ namespace Hydra.Controllers
 {
     public class CatalogController : Controller
     {
-        private readonly HydraContext _hydraContext;
         private readonly ProductBl _productBl;
 
         public CatalogController(HydraContext hydraContext)
         {
-            _hydraContext = hydraContext;
             _productBl = new ProductBl(hydraContext);
+        }
+
+        public ActionResult ByCategory(Category category)
+        {
+            return View("Views/Catalog/index.cshtml", _productBl.GetProductsByCategory(category));
         }
 
         // GET: Catalog
