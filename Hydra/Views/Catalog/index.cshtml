@@ -5,20 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All products in the catalog</h2>
-    <div class="row">
-        @{
-            foreach (var currProduct in Model)
-            {
-                <div style="border:hidden; margin-bottom:10px" align="center" class="col-lg-4 col-md-4 col-xs-4 thumb">
-                    <img class="img-responsive" src=@Html.DisplayFor(model => currProduct.ImageUrl) alt="img1" style="height:300px;width:300px">
-                    <p>
-                        @Html.ActionLink(currProduct.Name, "Details", "Product", new { id = currProduct.ID })
-                    </p>
-                </div>
-            }
+@{
+    if (Model.All(p => p.Category == Model.ElementAt(0).Category))
+    {
+        <h2>All products in the catalog from the @Model.ElementAt(0).Category</h2>
+    }
+    else
+    {
+        <h2>All products in the catalog</h2>
+    }
+}
+<div class="row">
+    @{
+        foreach (var currProduct in Model)
+        {
+            <div style="border:hidden; margin-bottom:10px" align="center" class="col-lg-4 col-md-4 col-xs-4 thumb">
+                <img class="img-responsive" src=@Html.DisplayFor(model => currProduct.ImageUrl) alt="img1" style="height:300px;width:300px">
+                <p>
+                    @Html.ActionLink(currProduct.Name, "Details", "Product", new { id = currProduct.ID })
+                </p>
+            </div>
         }
-    </div>
+    }
+</div>
 
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |

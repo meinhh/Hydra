@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hydra.Models;
 using Hydra.BL;
 using Hydra.Data;
+using System;
 using Microsoft.Extensions.Options;
 
 namespace Hydra.Controllers
@@ -12,18 +13,19 @@ namespace Hydra.Controllers
         private readonly ProductBl _productBl;
 
         public HomeController(HydraContext hydraContext)
-        {
+        {            
             _productBl = new ProductBl(hydraContext);
         }
 
         public IActionResult Index()
         {
+            ViewBag.Categories = Enum.GetValues(typeof(Category));
             return View(_productBl.GetAllProducts());
         }
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Please Dont Contact Us";
+            ViewData["Message"] = "Please Contact Us";
 
             return View();
         }
@@ -31,48 +33,6 @@ namespace Hydra.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        //private void HowToUseHydraContext() // TODO: remove once we have the needed logic
-        //{
-        //    var product1 = new Product
-        //    {
-        //        Name = "Milk",
-        //        Price = 5.0
-        //    };
-
-        //    var product2 = new Product
-        //    {
-        //        Name = "Bread",
-        //        Price = 3.5
-        //    };
-
-        //    var customer = new User
-        //    {
-        //        Address = "somewhere over the rainbow",
-        //        Name = "Toto",
-        //        Phone = "0541112312"
-        //    };
-
-        //    var order = new Order
-        //    {
-        //        Buyer = customer,
-        //        ProductsInStore = new List<ProductInStore> { new ProductInStore { Product = product1, Quantity = 2 } },
-        //        Date = DateTime.Now,
-        //        PaymentType = PaymentType.Bitcoin,
-        //    };
-
-        //    var store = new Store
-        //    {
-        //        Address = "israel",
-        //        Orders = new List<Order> { order },
-        //        Stock = new List<Stock> { new Stock { Product = product1, Quantity = 666 } }
-        //    };
-
-        //    _hydraContext.Add(product1);
-        //    _hydraContext.Add(product2);
-        //    _storeDataAccess.AddStore(store);
-        //    _hydraContext.SaveChanges();
-        //}
-}
+        }        
+    }
 }
