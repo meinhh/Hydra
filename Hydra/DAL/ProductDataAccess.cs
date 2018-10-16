@@ -25,5 +25,18 @@ namespace Hydra.DAL
         {
             return _hydraContext.Find<Product>(productId);
         }
+
+        public IEnumerable<Product> GetProductsByCategory(Category category)
+        {
+            return _hydraContext.Product
+                    .Where(p => p.Category == category)
+                    .AsEnumerable();
+        }
+
+        public void SaveProducts(List<Product> products)
+        {
+            _hydraContext.Product.AddRange(products);
+            _hydraContext.SaveChanges();
+        }
     }
 }
