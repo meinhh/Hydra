@@ -32,7 +32,7 @@ namespace Hydra.BL
             return _productDataAccess.GetProductsByCategory(category);
         }
 
-        public void SaveProducts(List<Product> products)
+        public void SaveProducts(IEnumerable<Product> products)
         {
             _productDataAccess.SaveProducts(products);
         }

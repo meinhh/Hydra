@@ -15,5 +15,6 @@ namespace Hydra.Data
         public DbSet<Store> Store { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Comment> Comment { get; set; }
+        public DbSet<Stock> Stock { get; set; }
     }
 }
