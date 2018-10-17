@@ -42,6 +42,9 @@ function showErrorMsg(msg) {
 }
 
 function showStores(stores) {
+    if (!stores || stores.length === 0)
+        return;
+
     showStoresOnMap(stores);
 
     window.navigator.geolocation.getCurrentPosition(userPosition => {
