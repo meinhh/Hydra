@@ -27,11 +27,15 @@ namespace Hydra.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<int?>("ProductID");
+
                     b.Property<int?>("PublisherID");
 
                     b.Property<string>("Text");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ProductID");
 
                     b.HasIndex("PublisherID");
 
@@ -124,6 +128,10 @@ namespace Hydra.Migrations
 
             modelBuilder.Entity("Hydra.Models.Comment", b =>
                 {
+                    b.HasOne("Hydra.Models.Product")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductID");
+
                     b.HasOne("Hydra.Models.User", "Publisher")
                         .WithMany()
                         .HasForeignKey("PublisherID");

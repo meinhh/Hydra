@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hydra.Migrations
 {
     [DbContext(typeof(HydraContext))]
-    [Migration("20181016173220_HydraMigration")]
+    [Migration("20181019080749_HydraMigration")]
     partial class HydraMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,11 +29,15 @@ namespace Hydra.Migrations
 
                     b.Property<DateTime>("Date");
 
+                    b.Property<int?>("ProductID");
+
                     b.Property<int?>("PublisherID");
 
                     b.Property<string>("Text");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ProductID");
 
                     b.HasIndex("PublisherID");
 
@@ -126,6 +130,10 @@ namespace Hydra.Migrations
 
             modelBuilder.Entity("Hydra.Models.Comment", b =>
                 {
+                    b.HasOne("Hydra.Models.Product")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductID");
+
                     b.HasOne("Hydra.Models.User", "Publisher")
                         .WithMany()
                         .HasForeignKey("PublisherID");

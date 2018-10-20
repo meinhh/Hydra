@@ -16,8 +16,9 @@ namespace Hydra.Controllers
         private readonly ProductBl _productBl;
 
         public HomeController(HydraContext hydraContext)
-        {            
+        {
             _productBl = new ProductBl(hydraContext);
+            //InitializeProducts(hydraContext);
         }
 
         public IActionResult Index()
@@ -41,24 +42,151 @@ namespace Hydra.Controllers
         }        
 
 
-        private void InitializeProducts()
+        private void InitializeProducts(HydraContext hydraContext)
         {
+            var mickeyMouse = new Product
+            {
+                Name = "Mickey Mouse",
+                Category = Category.Disney,
+                Description = "Mickey mouse figure",
+                Price = 95,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/Mickey_POP_GLAM.jpg?v=1510191643"
+            };
+
+            var batGirl = new Product
+            {
+                Name = "Bat Girl",
+                Category = Category.DC,
+                Description = "Bat girl figure",
+                Price = 90,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/13632_BatmanTV_Batgirl_POP_GLAM_HiRes.jpg?v=1490738932"
+            };
+
+            var ironMan = new Product
+            {
+                Name = "Ironman",
+                Category = Category.Marvel,
+                Description = "Iron man figure",
+                Price = 75,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/26463_AvengersInfinityWar_IronMan_POP_GLAM.png?v=1519854776"
+            };
+
+            var allisonHendrix = new Product
+            {
+                Name = "Allison Hendrix",
+                Category = Category.TV,
+                Description = "Allison Hendrix figure",
+                Price = 66.5,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/5033_Orphan_Black_Allison_hires.jpg?v=1510191796"
+            };
+
+            var freddyKrueger = new Product
+            {
+                Name = "Freddy Krueger",
+                Category = Category.Movies,
+                Description = "Freddy Krueger figure",
+                Price = 70.5,
+                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/FREDDY_POP_GLAM.jpg?v=1510191943"
+            };
+
+            var telAviv = new Store
+            {
+                Name = "Tel Aviv Pop",
+                ClosingHour = "22:00",
+                OpeningHour = "12:00",
+                Latitude = 32.074031,
+                Lontitude = 34.792868,
+                Stock = new List<Stock>
+                {
+                    new Stock
+                    {
+                        Product = mickeyMouse,
+                        Quantity = 5
+                    },
+                    new Stock
+                    {
+                        Product = allisonHendrix,
+                        Quantity = 24
+                    }
+                }
+            };
+
+            var jerusalem = new Store
+            {
+                Name = "Jerusalem Pop",
+                ClosingHour = "22:00",
+                OpeningHour = "12:00",
+                Latitude = 31.777820,
+                Lontitude = 35.209204,
+                Stock = new List<Stock>
+                {
+                    new Stock
+                    {
+                        Product = freddyKrueger,
+                        Quantity = 5
+                    },
+                    new Stock
+                    {
+                        Product = mickeyMouse,
+                        Quantity = 5
+                    },
+                    new Stock
+                    {
+                        Product = ironMan,
+                        Quantity = 12
+                    }
+                }
+            };
+
+            var eilat = new Store
+            {
+                Name = "Eilat Pop",
+                ClosingHour = "22:00",
+                OpeningHour = "12:00",
+                Latitude = 29.556008,
+                Lontitude = 34.961806,
+                Stock = new List<Stock>
+                {
+                    new Stock
+                    {
+                        Product = mickeyMouse,
+                        Quantity = 125
+                    },
+                    new Stock
+                    {
+                        Product = batGirl,
+                        Quantity = 32
+                    }
+                }
+            };
+
+            var meirav = new User
+            {
+                email = "meinhh@gmail.com",
+                BirthDate = new DateTime(1996, 7, 4),
+                Gender = Gender.Female,
+                IsManager = true,
+                Name = "Meirav Shenhar"
+            };
+
+            var gal = new User
+            {
+                email = "galhen400@gmail.com",
+                BirthDate = new DateTime(1996, 2, 19),
+                Gender = Gender.Male,
+                IsManager = true,
+                Name = "Gal Hen"
+            };
+
+            hydraContext.User.AddRange(meirav, gal);
+            hydraContext.Store.AddRange(telAviv, jerusalem, eilat);
+            hydraContext.SaveChanges();
+
             var fileEntries = Directory.GetFiles("./products");
             foreach (string fileName in fileEntries)
             {
                 var json = System.IO.File.ReadAllText(fileName);
-                var figures = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);
-                figures.First().Comments = new List<Comment>{new Comment{
-                            Publisher = new User {
-                                Name = "Alison Hendrix",
-                                Gender = Gender.Female,
-                                email = "clone@orphan.black",
-                                IsManager = false,
-                                BirthDate = new DateTime(1970,1,1)
-                            },
-                            Date = DateTime.Now.AddDays(-1),
-                            Text = "This is the worst product i've ever seen"
-                    }};
+                var figures = JsonConvert.DeserializeObject<IEnumerable<Product>>(json);                
                 var figuresNoId = figures.Select(x => new Product
                 {
                     Name = x.Name,
@@ -69,6 +197,18 @@ namespace Hydra.Controllers
                     Comments = x.Comments
                 });
                 _productBl.SaveProducts(figuresNoId);
+                figuresNoId.First().Comments = new List<Comment>{new Comment{
+                            Publisher = new User {
+                                Name = "Alison Hendrix",
+                                Gender = Gender.Female,
+                                email = "clone@orphan.black",
+                                IsManager = false,
+                                BirthDate = new DateTime(1970,1,1)
+                            },
+                            Date = DateTime.Now.AddDays(-1),
+                            Text = "This is the worst product i've ever seen"
+                    }};
+                _productBl.SaveProducts(new List<Product> { figuresNoId.First() });
             }
         }
     }
