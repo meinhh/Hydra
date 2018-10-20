@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Hydra.Models
 {
 	public class Product
 	{
-		public int ID { get; set; }
+        public int ID { get; set; }
 
 		public string Name { get; set; }
 
@@ -13,5 +16,7 @@ namespace Hydra.Models
         public Category Category { get; set; }
 
         public string Description { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
     }
 }

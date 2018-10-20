@@ -19,6 +19,25 @@ namespace Hydra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Hydra.Models.Comment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int?>("PublisherID");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PublisherID");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("Hydra.Models.Product", b =>
                 {
                     b.Property<int>("ID")
@@ -101,6 +120,13 @@ namespace Hydra.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Hydra.Models.Comment", b =>
+                {
+                    b.HasOne("Hydra.Models.User", "Publisher")
+                        .WithMany()
+                        .HasForeignKey("PublisherID");
                 });
 
             modelBuilder.Entity("Hydra.Models.Stock", b =>

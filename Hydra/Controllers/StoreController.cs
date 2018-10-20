@@ -214,6 +214,11 @@ namespace Hydra.Controllers
                     {
                         Product = mickeyMouse,
                         Quantity = 125
+                    },
+                    new Stock
+                    {
+                        Product = batGirl,
+                        Quantity = 32
                     }
                 }
             };
@@ -236,8 +241,31 @@ namespace Hydra.Controllers
                 Name = "Gal Hen"
             };
 
+            var comments = new List<Comment>
+            {
+                new Comment
+                {
+                    Date = new DateTime(2018, 9, 27),
+                    Publisher = meirav,
+                    Text = "Hydra pop is awsome!!"
+                },
+                new Comment
+                {
+                    Date = new DateTime(2018, 10, 16),
+                    Publisher = gal,
+                    Text = "We all love hydra pop ♥"
+                },
+                new Comment
+                {
+                    Date = new DateTime(2018, 10, 16),
+                    Publisher = meirav,
+                    Text = "Disney pop figures are the best"
+                }
+            };
+
             _hydraContext.User.AddRange(meirav, gal);
             _hydraContext.Store.AddRange(telAviv, jerusalem, eilat);
+            _hydraContext.Comment.AddRange(comments);
 
             _hydraContext.SaveChanges();
         }

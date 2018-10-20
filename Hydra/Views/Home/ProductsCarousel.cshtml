@@ -1,34 +1,14 @@
 ﻿@model IEnumerable<Hydra.Models.Product>
 
-<section id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <section class="carousel-inner" role="listbox">
-        @foreach (var product in Model.Take(4))
-        {
-            @if (product.ID == 1)
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+    <div class="carousel-inner" role="listbox">
+        @{
+            for (int i = 5; i < Model.Count(); i++)
             {
-                <div class="item active">
-                    <img src="@Html.DisplayFor(modelItem => product.ImageUrl)" alt="@Html.DisplayFor(modelItem => product.Name)" class="img-responsive" />
+                <div class="@(@i == 5 ? "item active" : "item")">
+                    <img style="height: 350px;" src="@Model.ElementAt(i).ImageUrl" alt="@Model.ElementAt(i).Name" class="img-responsive" />
                     <div class="carousel-caption" role="option">
-                        <button class="btn btn-danger">
-                            Get More details for @Html.ActionLink(product.Name, "Details", "Product", new { id = product.ID })
-                        </button>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="item">
-                    <img src="@Html.DisplayFor(modelItem => product.ImageUrl)" alt="@Html.DisplayFor(modelItem => product.Name)" class="img-responsive" />
-                    <div class="carousel-caption" role="option">
-                        <button class="btn btn-danger">
-                            Get More details for @Html.ActionLink(product.Name, "Details", "Product", new { id = product.ID })
-                        </button>
+                        <kbd><a href="/Product/Details/@Model.ElementAt(i).ID" class="alert-link">@Model.ElementAt(i).Name</a></kbd>
                     </div>
                 </div>
             }
@@ -43,4 +23,5 @@
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
-    </section>
+    </div>
+</div>

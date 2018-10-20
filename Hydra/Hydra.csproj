@@ -40,6 +40,9 @@
     <Compile Remove="Migrations\20181011135749_HydraMigration.Designer.cs" />
     <Compile Remove="Migrations\20181011141455_HydraMigration.cs" />
     <Compile Remove="Migrations\20181011141455_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20181011144657_HydraMigration.cs" />
+    <Compile Remove="Migrations\20181011144657_HydraMigration.Designer.cs" />
+    <Compile Remove="DAL\CommentDataAccess.cs" />
   </ItemGroup>
 
   <ItemGroup>

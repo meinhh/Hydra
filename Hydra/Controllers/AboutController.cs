@@ -14,7 +14,7 @@ namespace Hydra.Controllers
     public class AboutController : Controller
     {
         private readonly StoreBl _storeBl;
-        private ISecretSettings _secrets;
+        private readonly ISecretSettings _secrets;
 
         public AboutController(HydraContext hydraContext, [FromServices]ISecretSettings secrets)
         {

@@ -26,10 +26,10 @@ namespace Hydra
 		{
 			services.AddMvc();
 
-            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("HydraContext"))
-            {
-                Password = Configuration["Secret:DbPassword"]
-            };
+            var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("HydraContext"));
+            //{
+            //    Password = Configuration["Secret:DbPassword"]
+            //};
             services.AddDbContext<HydraContext>(options =>
                                                 options.UseSqlServer(builder.ConnectionString));
                                              

@@ -26,5 +26,15 @@ namespace Hydra.BL
         {
             return _productDataAccess.GetProductById(productId);
         }
+
+        public IEnumerable<Product> GetProductsByCategory(Category category)
+        {
+            return _productDataAccess.GetProductsByCategory(category);
+        }
+
+        public void SaveProducts(IEnumerable<Product> products)
+        {
+            _productDataAccess.SaveProducts(products);
+        }
     }
 }
