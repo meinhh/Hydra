@@ -9,7 +9,7 @@ namespace Hydra.Controllers
 
     public class StatisticsController : Controller
     {
-        private HydraContext _hydraContext;
+        private readonly HydraContext _hydraContext;
 
         public StatisticsController(HydraContext hydraContext)
         {
@@ -17,7 +17,7 @@ namespace Hydra.Controllers
         }
 
         public PartialViewResult GetStatistics()
-        {
+        {    
             var productsByStore = _hydraContext.Store
                 .Select(s => new { store = s.Name, count = s.Stock.Count() })
                 .ToList();

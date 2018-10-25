@@ -19,7 +19,7 @@ namespace Hydra.Controllers
         [HttpPost]
         public ActionResult Add(IFormCollection form)
         {
-            _commentBl.Add(form["ProductId"], form["Comment"]);
+            _commentBl.Add(form["ProductId"], form["Comment"], HttpContext.Session.GetString("ConnectedUserId"));
 
             return RedirectToAction("Details", "Product", new { id = form["ProductId"] });
         }
