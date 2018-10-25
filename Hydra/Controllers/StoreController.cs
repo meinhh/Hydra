@@ -225,22 +225,16 @@ namespace Hydra.Controllers
 
             var meirav = new User
             {
-                email = "meinhh@gmail.com",
-                BirthDate = new DateTime(1996, 7, 4),
-                Gender = Gender.Female,
-                IsManager = true,
-                Name = "Meirav Shenhar"
+                Name = "Meirav Shenhar",
+                Gender = Gender.Female
             };
 
             var gal = new User
             {
-                email = "galhen400@gmail.com",
-                BirthDate = new DateTime(1996, 2, 19),
-                Gender = Gender.Male,
-                IsManager = true,
-                Name = "Gal Hen"
+                Name = "Gal Hen",
+                Gender = Gender.Male
             };
-
+             
             var comments = new List<Comment>
             {
                 new Comment

@@ -27,6 +27,8 @@ namespace Hydra.Controllers
         // GET: Product/Details/5
         public ActionResult Details(int id)
         {
+            ViewData["UserId"] = HttpContext.Session.GetString("ConnectedUserId");
+
             return View(_productBl.GetProductById(id));
         }
 

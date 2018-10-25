@@ -46,13 +46,9 @@ namespace Hydra.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ID = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Gender = table.Column<int>(nullable: false),
-                    email = table.Column<string>(nullable: true),
-                    IsManager = table.Column<bool>(nullable: false),
-                    BirthDate = table.Column<DateTime>(nullable: false)
+                    Gender = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,7 +88,7 @@ namespace Hydra.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PublisherID = table.Column<int>(nullable: true),
+                    PublisherID = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     ProductID = table.Column<int>(nullable: true)
