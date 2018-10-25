@@ -1,4 +1,7 @@
-﻿@using (Html.BeginForm("Logout", "Admin"))
+﻿
+<h1>@Html.ActionLink("Open Statistics Page", "GetStatistics", "Statistics")</h1>
+
+@using (Html.BeginForm("Logout", "Admin"))
 {
     <input type="submit" class="btn btn-default" value="Logout" />
 }

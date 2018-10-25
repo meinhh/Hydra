@@ -1,7 +1,4 @@
-﻿using System;
-using Hydra.BL;
-using Hydra.Data;
-using Hydra.Models;
+﻿using Hydra.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
