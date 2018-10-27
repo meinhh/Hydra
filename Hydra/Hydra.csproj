@@ -47,6 +47,7 @@
     <Compile Remove="Migrations\20181016173220_HydraMigration.Designer.cs" />
     <Compile Remove="Migrations\20181019080749_HydraMigration.cs" />
     <Compile Remove="Migrations\20181019080749_HydraMigration.Designer.cs" />
+    <Compile Remove="Views\Admin\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,9 +68,14 @@
 
   <ItemGroup>
     <Folder Include="Views\About\" />
+    <Folder Include="Views\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\red_pin.png" />
+    <Content Remove="Views\Admin\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin\Login.cshtml" />
   </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 

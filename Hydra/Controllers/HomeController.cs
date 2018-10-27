@@ -162,19 +162,13 @@ namespace Hydra.Controllers
 
             var meirav = new User
             {
-                email = "meinhh@gmail.com",
-                BirthDate = new DateTime(1996, 7, 4),
                 Gender = Gender.Female,
-                IsManager = true,
                 Name = "Meirav Shenhar"
             };
 
             var gal = new User
             {
-                email = "galhen400@gmail.com",
-                BirthDate = new DateTime(1996, 2, 19),
                 Gender = Gender.Male,
-                IsManager = true,
                 Name = "Gal Hen"
             };
 
@@ -200,10 +194,7 @@ namespace Hydra.Controllers
                 figuresNoId.First().Comments = new List<Comment>{new Comment{
                             Publisher = new User {
                                 Name = "Alison Hendrix",
-                                Gender = Gender.Female,
-                                email = "clone@orphan.black",
-                                IsManager = false,
-                                BirthDate = new DateTime(1970,1,1)
+                                Gender = Gender.Female
                             },
                             Date = DateTime.Now.AddDays(-1),
                             Text = "This is the worst product i've ever seen"

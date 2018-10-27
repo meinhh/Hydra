@@ -29,7 +29,7 @@ namespace Hydra.Migrations
 
                     b.Property<int?>("ProductID");
 
-                    b.Property<int?>("PublisherID");
+                    b.Property<string>("PublisherID");
 
                     b.Property<string>("Text");
 
@@ -107,19 +107,12 @@ namespace Hydra.Migrations
 
             modelBuilder.Entity("Hydra.Models.User", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("BirthDate");
+                    b.Property<string>("ID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("Gender");
 
-                    b.Property<bool>("IsManager");
-
                     b.Property<string>("Name");
-
-                    b.Property<string>("email");
 
                     b.HasKey("ID");
 

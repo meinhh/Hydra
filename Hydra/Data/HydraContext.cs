@@ -11,7 +11,7 @@ namespace Hydra.Data
             Database.Migrate();
         }
 
-		public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Product { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Comment> Comment { get; set; }

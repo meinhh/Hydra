@@ -47,40 +47,45 @@
       </dl>
     <div>
         <h1>@Html.DisplayNameFor(model => model.Comments)</h1>
-
-        <div style="margin: 10px">
-            @using (Html.BeginForm("Add", "Comment", FormMethod.Post))
+        @if (ViewData["UserId"].ToString() == string.Empty)
+    {
+        <h1>Please connect with facebook to add a comment</h1>
+}
+else
+{
+    <div style="margin: 10px">
+        @using (Html.BeginForm("Add", "Comment", FormMethod.Post))
     {
         @Html.Hidden("ProductId", Model.ID)
         @Html.TextArea("Comment", null, new { @style = "width: 100%" })
         <input type="submit" value="Add Comment" class="btn btn-default" />
 
 }
-        </div>
-
+    </div>
+}
         <div class="list-group">
             @{
-        if (Model.Comments != null && Model.Comments.Any())
-        {
-            foreach (var comment in Model.Comments)
-            {
 
-                <div class="col-sm-5" style="width: 100%">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <strong>@comment.Publisher.Name</strong> <span class="text-muted">@comment.Date</span>
-                        </div>
-                        <div class="panel-body">
-                            @comment.Text
+            if (Model.Comments != null && Model.Comments.Any())
+            {
+                foreach (var comment in Model.Comments)
+                {
+
+                    <div class="col-sm-5" style="width: 100%">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>@comment.Publisher.Name</strong> <span class="text-muted">@comment.Date</span>
+                            </div>
+                            <div class="panel-body">
+                                @comment.Text
+                            </div>
                         </div>
                     </div>
-                </div>
-    }
-} }
+            }
+        } }
         </div>
-        </div>
-                
-            </div>
+    </div>
+</div>
 <div>
     @Html.ActionLink("Edit", "Edit", new {  id = Model.ID  }) |
     @Html.ActionLink("Delete", "Delete", new {  id = Model.ID  }) |

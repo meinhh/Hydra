@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Hydra.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
+using Hydra.Models;
 
 namespace Hydra
 {
@@ -32,11 +33,21 @@ namespace Hydra
             //};
             services.AddDbContext<HydraContext>(options =>
                                                 options.UseSqlServer(builder.ConnectionString));
-                                             
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
             services.AddSingleton<ISecretSettings>(
                 new SecretSettings(Configuration["Secret:MapCredantials"], 
                                    Configuration["Secret:DbPassword"],
                                    Configuration["Secret:WeatherKey"]));
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(1);
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +63,8 @@ namespace Hydra
 			}
 
 			app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseCors(builder => builder
                 .AllowAnyOrigin()
