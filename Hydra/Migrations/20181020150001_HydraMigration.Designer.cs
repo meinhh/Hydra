@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hydra.Migrations
 {
     [DbContext(typeof(HydraContext))]
-    [Migration("20181019080749_HydraMigration")]
+    [Migration("20181020150001_HydraMigration")]
     partial class HydraMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Hydra.BL;
 using Hydra.Data;
+using Hydra.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,30 +54,43 @@ namespace Hydra.Controllers
         // GET: Product/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            // add checking for user kind
+            var product = _productBl.GetProductById(id);
+            if(product == null)
+            {
+                return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+            }
+            return View(product);
         }
 
         // POST: Product/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, [Bind("ID", "Name", "Price", "ImageUrl", "Category", "Description")] Product product)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                // TODO: Add user logic here
+                _productBl.UpdateProduct(product);
+                return View(product);
             }
             catch
             {
-                return View();
+                // add error page?
+                return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
             }
         }
 
         // GET: Product/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            // add checking for user kind
+            var product = _productBl.GetProductById(id);
+            if (product == null)
+            {
+                return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+            }
+            return View(product);
         }
 
         // POST: Product/Delete/5
@@ -89,13 +100,21 @@ namespace Hydra.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var product = _productBl.GetProductById(id);
+                try
+                {
+                    _productBl.DeleteProduct(product);
+                }
+                catch
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+                }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index", "Error", new { error = string.Format("Oops! failed to delete product with id {0}", id) });
             }
         }
     }

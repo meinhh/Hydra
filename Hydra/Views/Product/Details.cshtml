@@ -41,9 +41,6 @@
         <dd>
             @Html.DisplayFor(model => model.Price)₪
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
         <dd>
             <img src="@Html.DisplayFor(model => model.ImageUrl)" alt="Pop Image" style="height:150px;width:150px" />
         </dd>
@@ -85,7 +82,7 @@
                 
             </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-controller="Store" asp-action="Index">Back to Store</a> |
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.ID  }) |
+    @Html.ActionLink("Delete", "Delete", new {  id = Model.ID  }) |
     <a asp-controller="Home" asp-action="Index">Back to Home Page</a>
 </div>

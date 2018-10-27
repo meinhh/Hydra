@@ -52,5 +52,17 @@ namespace Hydra.DAL
             this.GetProductById(productId).Comments.Add(comment);
             _hydraContext.SaveChanges();
         }
+
+        public void UpdateProduct(Product product)
+        {
+            _hydraContext.Product.Update(product);
+            _hydraContext.SaveChanges();
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            _hydraContext.Product.Remove(product);
+            _hydraContext.SaveChanges();
+        }
     }
 }
