@@ -47,7 +47,7 @@
       </dl>
     <div>
         <h1>@Html.DisplayNameFor(model => model.Comments)</h1>
-        @if (ViewData["UserId"].ToString() == string.Empty)
+        @if (string.IsNullOrWhiteSpace(ViewData["UserId"] as string))
     {
         <h1>Please connect with facebook to add a comment</h1>
 }

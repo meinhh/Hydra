@@ -123,22 +123,26 @@ namespace Hydra.Migrations
                 {
                     b.HasOne("Hydra.Models.Product")
                         .WithMany("Comments")
-                        .HasForeignKey("ProductID");
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Hydra.Models.User", "Publisher")
                         .WithMany()
-                        .HasForeignKey("PublisherID");
+                        .HasForeignKey("PublisherID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Hydra.Models.Stock", b =>
                 {
                     b.HasOne("Hydra.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductID");
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Hydra.Models.Store")
                         .WithMany("Stock")
-                        .HasForeignKey("StoreID");
+                        .HasForeignKey("StoreID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
