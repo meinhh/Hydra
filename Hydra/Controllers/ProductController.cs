@@ -25,7 +25,9 @@ namespace Hydra.Controllers
         // GET: Product/Details/5
         public ActionResult Details(int id)
         {
-            ViewData["UserId"] = HttpContext.Session.GetString("ConnectedUserId");
+            ViewData["UserId"] =
+                HttpContext.Session.GetString("ConnectedUserId") ??
+                string.Empty;
 
             return View(_productBl.GetProductById(id));
         }
@@ -39,30 +41,71 @@ namespace Hydra.Controllers
         // POST: Product/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        //public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(int id, [Bind("ID", "Name", "Price", "ImageUrl", "Category", "Description")] Product product)
         {
             try
             {
                 // TODO: Add insert logic here
+                if (product.Price <= 0)
+                {
+                    return RedirectToAction("Index", "Error", new { error = "Product price cant be negative or zero" });
+                }
+                if (string.IsNullOrWhiteSpace(product.Name))
+                {
+                    return RedirectToAction("Index", "Error", new { error = "Product name cant be empty or null" });
+                }
 
-                return RedirectToAction(nameof(Index));
+                if (string.IsNullOrWhiteSpace(product.ImageUrl))
+                {
+                    return RedirectToAction("Index", "Error", new { error = "Product image url cant be empty or null" });
+                }
+
+                if (string.IsNullOrWhiteSpace(product.Description))
+                {
+                    return RedirectToAction("Index", "Error", new { error = "Product description cant be empty or null" });
+                }
+
+                var productToAdd = new Product
+                {
+                    Name = product.Name,
+                    Description = product.Description,
+                    ImageUrl = product.ImageUrl,
+                    Price = product.Price,
+                    Category = product.Category
+                };
+
+                _productBl.SaveProdcut(productToAdd);
+
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index", "Error");
             }
         }
 
         // GET: Product/Edit/5
         public ActionResult Edit(int id)
         {
-            // add checking for user kind
-            var product = _productBl.GetProductById(id);
-            if(product == null)
+            if (!IsAdminConnected())
             {
-                return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
             }
-            return View(product);
+            try
+            {
+                var product = _productBl.GetProductById(id);
+                if (product == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+                }
+
+                return View(product);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
         }
 
         // POST: Product/Edit/5
@@ -78,7 +121,6 @@ namespace Hydra.Controllers
             }
             catch
             {
-                // add error page?
                 return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
             }
         }
@@ -86,13 +128,24 @@ namespace Hydra.Controllers
         // GET: Product/Delete/5
         public ActionResult Delete(int id)
         {
-            // add checking for user kind
-            var product = _productBl.GetProductById(id);
-            if (product == null)
+            if (!IsAdminConnected())
             {
-                return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
             }
-            return View(product);
+
+            try
+            {
+                var product = _productBl.GetProductById(id);
+                if (product == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+                }
+                return View(product);
+            }
+            catch 
+            {
+                return RedirectToAction("Index", "Error");
+            }
         }
 
         // POST: Product/Delete/5
@@ -119,5 +172,13 @@ namespace Hydra.Controllers
                 return RedirectToAction("Index", "Error", new { error = string.Format("Oops! failed to delete product with id {0}", id) });
             }
         }
+
+        private bool IsAdminConnected()
+        {
+            var isAdminConnected = HttpContext.Session.GetInt32("IsAdminConnected") ?? 0;
+            return isAdminConnected == 1 ? true : false;
+        }
     }
+
+
 }

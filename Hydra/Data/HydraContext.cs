@@ -8,6 +8,8 @@ namespace Hydra.Data
 		public HydraContext(DbContextOptions<HydraContext> options)
 			: base(options)
 		{
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
             Database.Migrate();
         }
 
