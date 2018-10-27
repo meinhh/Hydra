@@ -199,7 +199,7 @@ namespace Hydra.Controllers
                             Date = DateTime.Now.AddDays(-1),
                             Text = "This is the worst product i've ever seen"
                     }};
-                _productBl.SaveProducts(new List<Product> { figuresNoId.First() });
+                _productBl.UpdateProduct(figuresNoId.First());
             }
         }
     }
