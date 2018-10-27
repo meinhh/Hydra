@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Hydra.Data;
 using Hydra.Models;
@@ -34,6 +36,11 @@ namespace Hydra.DAL
         public User GetUser(string id) 
         {
             return _context.User.FirstOrDefault(u => u.ID == id);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _context.User.ToList();
         }
     }
 }
