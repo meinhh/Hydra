@@ -13,12 +13,10 @@ namespace Hydra.Controllers
 {
     public class StoreController : Controller
     {
-        private readonly HydraContext _hydraContext;
         private readonly StoreBl _storeBl;
 
         public StoreController(HydraContext hydraContext)
         {
-            _hydraContext = hydraContext;
             _storeBl = new StoreBl(hydraContext);
         }
 
@@ -26,7 +24,6 @@ namespace Hydra.Controllers
         // GET: Store
         public ActionResult Index()
         {
-            // HowToUseHydraContext();
             return View(_storeBl.GetAllStores());
         }
 
@@ -39,53 +36,117 @@ namespace Hydra.Controllers
         // GET: Store/Create
         public ActionResult Create()
         {
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
+            }
+
             return View();
         }
 
         // POST: Store/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(int id, [Bind("Name", "Lontitude", "Latitude", "OpeningHour", "ClosingHour")] Store store)
         {
             try
             {
-                // TODO: Add insert logic here
+                var errorMessage = GetErrorIfInvalid(store);
 
-                return RedirectToAction(nameof(Index));
+                if(!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    return RedirectToAction("Index", "Error", new { error = errorMessage });
+                }
+
+                _storeBl.AddStore(store);
+                return RedirectToAction("Index", "About");
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index", "Error");
             }
         }
 
         // GET: Store/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
+            }
+            try
+            {
+                var store = _storeBl.GetStoreById(id);
+                if (store == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find store with id {0}", id) });
+                }
+
+                return View(store);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
         }
 
         // POST: Store/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, [Bind("Name", "Lontitude", "Latitude", "OpeningHour", "ClosingHour")] Store store)
         {
             try
             {
-                // TODO: Add update logic here
+                var storeToEdit = _storeBl.GetStoreById(id);
 
-                return RedirectToAction(nameof(Index));
+                if (storeToEdit == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find store with id {0}", id) });
+                }
+
+                var errorMessage = GetErrorIfInvalid(store);
+
+                if (!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    return RedirectToAction("Index", "Error", new { error = errorMessage });
+                }
+               
+                storeToEdit.Latitude = store.Latitude;
+                storeToEdit.Lontitude = store.Lontitude;
+                storeToEdit.Name = store.Name;
+                storeToEdit.OpeningHour = store.OpeningHour;
+                storeToEdit.ClosingHour = store.ClosingHour;
+
+                _storeBl.UpdateStore(storeToEdit);
+                return View(storeToEdit);
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index", "Error");
             }
         }
 
         // GET: Store/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
+            }
+
+            try
+            {
+                var store = _storeBl.GetStoreById(id);
+                if (store == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find store with id {0}", id) });
+                }
+                return View(store);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
         }
 
         // POST: Store/Delete/5
@@ -95,173 +156,63 @@ namespace Hydra.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                var store = _storeBl.GetStoreById(id);
+                try
+                {
+                    _storeBl.DeleteStore(store);
+                }
+                catch
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find store with id {0}", id) });
+                }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index", "Error", new { error = string.Format("Oops! failed to delete product with id {0}", id) });
             }
         }
 
-        private void HowToUseHydraContext() // TODO: remove once we have the needed logic
+        private string GetErrorIfInvalid(Store store)
         {
-            var mickeyMouse = new Product
-            {
-                Name = "Mickey Mouse",
-                Category = Category.Disney,
-                Description = "Mickey mouse figure",
-                Price = 95,
-                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/Mickey_POP_GLAM.jpg?v=1510191643"
-            };
+            var error = string.Empty;
 
-            var batGirl = new Product
+            if (string.IsNullOrEmpty(store.Name))
             {
-                Name = "Bat Girl",
-                Category = Category.DC,
-                Description = "Bat girl figure",
-                Price = 90,
-                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/13632_BatmanTV_Batgirl_POP_GLAM_HiRes.jpg?v=1490738932"
-            };
+                error = "Store name cant be null";
+            }
 
-            var ironMan = new Product
+            if (store.Lontitude <= 0 || store.Latitude <= 0)
             {
-                Name = "Ironman",
-                Category = Category.Marvel,
-                Description = "Iron man figure",
-                Price = 75,
-                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/26463_AvengersInfinityWar_IronMan_POP_GLAM.png?v=1519854776"
-            };
+                error = "Lontitude or latitude are zero or less";
+            }
 
-            var allisonHendrix = new Product
+            if (string.IsNullOrEmpty(store.OpeningHour))
             {
-                Name = "Allison Hendrix",
-                Category = Category.TV,
-                Description = "Allison Hendrix figure",
-                Price = 66.5,
-                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/5033_Orphan_Black_Allison_hires.jpg?v=1510191796"
-            };
+                error = "Opening hours cant be null";
+            }
 
-            var freddyKrueger = new Product
+            if (string.IsNullOrEmpty(store.ClosingHour))
             {
-                Name = "Freddy Krueger",
-                Category = Category.Movies,
-                Description = "Freddy Krueger figure",
-                Price = 70.5,
-                ImageUrl = "https://cdn.shopify.com/s/files/1/0552/1401/products/FREDDY_POP_GLAM.jpg?v=1510191943"
-            };
+                error = "Closing hours name cant be null";
+            }
 
-            var telAviv = new Store
+            var closingHh = int.Parse(store.ClosingHour.Split(':')[0]);
+            var openingHh = int.Parse(store.OpeningHour.Split(':')[0]);
+
+            if (closingHh < openingHh)
             {
-                Name = "Tel Aviv Pop",
-                ClosingHour = "22:00",
-                OpeningHour = "12:00",
-                Latitude = 32.074031,
-                Lontitude = 34.792868,
-                Stock = new List<Stock>
-                {
-                    new Stock
-                    {
-                        Product = mickeyMouse,
-                        Quantity = 5
-                    },
-                    new Stock
-                    {
-                        Product = allisonHendrix,
-                        Quantity = 24
-                    }
-                }
-            };
+                error = "Closing hour cant be before opening hours";
+            }
 
-            var jerusalem = new Store
-            {
-                Name = "Jerusalem Pop",
-                ClosingHour = "22:00",
-                OpeningHour = "12:00",
-                Latitude = 31.776555,
-                Lontitude = 35.234390,
-                Stock = new List<Stock>
-                {
-                    new Stock
-                    {
-                        Product = freddyKrueger,
-                        Quantity = 5
-                    },
-                    new Stock
-                    {
-                        Product = mickeyMouse,
-                        Quantity = 5
-                    },
-                    new Stock
-                    {
-                        Product = ironMan,
-                        Quantity = 12
-                    }
-                }
-            };
+            return error;
+        }
 
-            var eilat = new Store
-            {
-                Name = "Eilat Pop",
-                ClosingHour = "22:00",
-                OpeningHour = "12:00",
-                Latitude = 29.556008,
-                Lontitude = 34.961806,
-                Stock = new List<Stock>
-                {
-                    new Stock
-                    {
-                        Product = mickeyMouse,
-                        Quantity = 125
-                    },
-                    new Stock
-                    {
-                        Product = batGirl,
-                        Quantity = 32
-                    }
-                }
-            };
-
-            var meirav = new User
-            {
-                Name = "Meirav Shenhar",
-                Gender = Gender.Female
-            };
-
-            var gal = new User
-            {
-                Name = "Gal Hen",
-                Gender = Gender.Male
-            };
-             
-            var comments = new List<Comment>
-            {
-                new Comment
-                {
-                    Date = new DateTime(2018, 9, 27),
-                    Publisher = meirav,
-                    Text = "Hydra pop is awsome!!"
-                },
-                new Comment
-                {
-                    Date = new DateTime(2018, 10, 16),
-                    Publisher = gal,
-                    Text = "We all love hydra pop ♥"
-                },
-                new Comment
-                {
-                    Date = new DateTime(2018, 10, 16),
-                    Publisher = meirav,
-                    Text = "Disney pop figures are the best"
-                }
-            };
-
-            _hydraContext.User.AddRange(meirav, gal);
-            _hydraContext.Store.AddRange(telAviv, jerusalem, eilat);
-            _hydraContext.Comment.AddRange(comments);
-
-            _hydraContext.SaveChanges();
+        private bool IsAdminConnected()
+        {
+            var isAdminConnected = HttpContext.Session.GetInt32("IsAdminConnected") ?? 0;
+            return isAdminConnected == 1 ? true : false;
         }
     }
 }

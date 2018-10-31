@@ -78,6 +78,11 @@
   <ItemGroup>
     <Content Include="Views\Admin\Login.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="Views\Store\Delete.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>
