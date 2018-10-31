@@ -23,7 +23,7 @@ namespace Hydra.DAL
                 .ToList();
         }
 
-        public Store GetStroeById(int storeId)
+        public Store GetStoreById(int storeId)
         {
             return _hydraContext.Store
                 .Include(x => x.Stock)
