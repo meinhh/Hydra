@@ -51,24 +51,11 @@ namespace Hydra.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                if (product.Price <= 0)
-                {
-                    return RedirectToAction("Index", "Error", new { error = "Product price cant be negative or zero" });
-                }
-                if (string.IsNullOrWhiteSpace(product.Name))
-                {
-                    return RedirectToAction("Index", "Error", new { error = "Product name cant be empty or null" });
-                }
+                var errorMessage = GetErrorIfInvalid(product);
 
-                if (string.IsNullOrWhiteSpace(product.ImageUrl))
+                if(!string.IsNullOrWhiteSpace(errorMessage))
                 {
-                    return RedirectToAction("Index", "Error", new { error = "Product image url cant be empty or null" });
-                }
-
-                if (string.IsNullOrWhiteSpace(product.Description))
-                {
-                    return RedirectToAction("Index", "Error", new { error = "Product description cant be empty or null" });
+                    return RedirectToAction("Index", "Error", new { error = errorMessage });
                 }
 
                 var productToAdd = new Product
@@ -120,13 +107,33 @@ namespace Hydra.Controllers
         {
             try
             {
-                // TODO: Add user logic here
-                _productBl.UpdateProduct(product);
-                return View(product);
+                var productToEdit = _productBl.GetProductById(id);
+
+                if(productToEdit == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+
+                }
+
+                var errorMessage = GetErrorIfInvalid(product);
+                
+                if (!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    return RedirectToAction("Index", "Error", new { error = errorMessage });
+                }
+
+                productToEdit.Description = product.Description;
+                productToEdit.Category = product.Category;
+                productToEdit.ImageUrl = product.ImageUrl;
+                productToEdit.Name = product.Name;
+                productToEdit.Price = product.Price;
+
+                _productBl.UpdateProduct(productToEdit);
+                return View(productToEdit);
             }
             catch
             {
-                return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+                return RedirectToAction("Index", "Error");
             }
         }
 
@@ -176,6 +183,32 @@ namespace Hydra.Controllers
             {
                 return RedirectToAction("Index", "Error", new { error = string.Format("Oops! failed to delete product with id {0}", id) });
             }
+        }
+
+        private string GetErrorIfInvalid(Product product)
+        {
+            var error = string.Empty;
+
+            if (product.Price <= 0)
+            {
+                error = "Product price cant be negative or zero";
+            }
+            if (string.IsNullOrWhiteSpace(product.Name))
+            {
+                error = "Product name cant be empty or null";
+            }
+
+            if (string.IsNullOrWhiteSpace(product.ImageUrl))
+            {
+                error = "Product image url cant be empty or null";
+            }
+
+            if (string.IsNullOrWhiteSpace(product.Description))
+            {
+                error = "Product description cant be empty or null";
+            }
+
+            return error;
         }
 
         private bool IsAdminConnected()
