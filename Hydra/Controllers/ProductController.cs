@@ -19,7 +19,7 @@ namespace Hydra.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Error");
         }
 
         // GET: Product/Details/5
@@ -35,6 +35,11 @@ namespace Hydra.Controllers
         // GET: Product/Create
         public ActionResult Create()
         {
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
+            }
+
             return View();
         }
 

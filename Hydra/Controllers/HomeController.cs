@@ -24,7 +24,6 @@ namespace Hydra.Controllers
         public IActionResult Index()
         {
             //InitializeProducts();
-
             ViewBag.Categories = Enum.GetValues(typeof(Category));
             return View(_productBl.GetAllProducts());
         }

@@ -25,6 +25,30 @@ namespace Hydra.Controllers
             return View("Views/Catalog/index.cshtml", _productBl.GetProductsByCategory(category));
         }
 
+        public ActionResult Search(Category category, double from, double to)
+        {
+            try
+            {
+                if (from <= 0 || to <= 0)
+                {
+                    return RedirectToAction("Index", "Error", new { error = "from or to cant be negative or zero" });
+                }
+
+                if (from > to)
+                {
+                    return RedirectToAction("Index", "Error", new { error = "from range cant be higer than to" });
+                }
+
+                var products = _productBl.GetProductsByCategory(category)
+                    .Where(p => p.Price <= to && p.Price >= from);
+                return View("Views/Catalog/index.cshtml", products);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
         // GET: Catalog
         public ActionResult Index()
         {
