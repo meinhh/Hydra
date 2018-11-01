@@ -15,18 +15,28 @@ namespace Hydra.Controllers
     {
         private readonly HydraContext _hydraContext;
         private readonly ProductBl _productBl;
+        private readonly StoreBl _storeBl;
 
         public CatalogController(HydraContext hydraContext)
         {
             _hydraContext = hydraContext;
             _productBl = new ProductBl(hydraContext);
+            _storeBl = new StoreBl(hydraContext);
         }
 
         // GET: Catalog
         public ActionResult Index()
         {
+            ViewBag.stores = _storeBl.GetAllStores();
             return View(_productBl.GetAllProducts());
         }
+
+        // GET: Catalog
+        public ActionResult GetAllStores()
+        {
+            return View(_storeBl.GetAllStores());
+        }
+
 
         // GET: Catalog/Details/5
         public ActionResult Details(int id)

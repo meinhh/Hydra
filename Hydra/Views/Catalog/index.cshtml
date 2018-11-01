@@ -5,20 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All products in the catalog</h2>
-    <div class="row">
-        @{
-            foreach (var currProduct in Model)
-            {
-                <div style="border:hidden; margin-bottom:10px" align="center" class="col-lg-4 col-md-4 col-xs-4 thumb">
-                    <img class="img-responsive" src=@Html.DisplayFor(model => currProduct.ImageUrl) alt="img1" style="height:300px;width:300px">
-                    <p>
-                        @Html.ActionLink(currProduct.Name, "Details", "Product", new { id = currProduct.ID })
-                    </p>
-                </div>
-            }
+<select id="storeRole" class="form-control" name="storeRole">
+    @{
+        foreach (Store currStore in ViewBag.stores)
+        {
+            <option value="@currStore.ID">@currStore.Name</option>
         }
-    </div>
+    }
+</select>
+<h2>All products in the catalog</h2>
+<div class="row">
+    @{
+        foreach (var currProduct in Model)
+        {
+            <div class="product-item-box col-lg-4 col-md-4 col-xs-4 thumb">
+                <img class="product-item-image" src=@Html.DisplayFor(model => currProduct.ImageUrl) alt="img1">
+                <p>
+                    @Html.ActionLink(currProduct.Name, "Details", "Product", new { id = currProduct.ID })
+                </p>
+            </div>
+        }
+    }
+</div>
 
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
