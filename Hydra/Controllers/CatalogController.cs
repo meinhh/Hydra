@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Hydra.BL;
-using Hydra.DAL;
 using Hydra.Data;
 using Hydra.Models;
 using Microsoft.AspNetCore.Http;
@@ -13,15 +9,47 @@ namespace Hydra.Controllers
 {
     public class CatalogController : Controller
     {
-        private readonly HydraContext _hydraContext;
         private readonly ProductBl _productBl;
         private readonly StoreBl _storeBl;
 
         public CatalogController(HydraContext hydraContext)
         {
-            _hydraContext = hydraContext;
             _productBl = new ProductBl(hydraContext);
             _storeBl = new StoreBl(hydraContext);
+        }
+
+        public ActionResult ByCategory(Category category)
+        {
+            return View("Views/Catalog/index.cshtml", _productBl.GetProductsByCategory(category));
+        }
+
+        public ActionResult ByStore(int id)
+        {
+            return View("Views/Catalog/index.cshtml", _storeBl.GetProductsByStoreId(id));
+        }
+
+        public ActionResult Search(Category category, double from, double to)
+        {
+            try
+            {
+                if (from <= 0 || to <= 0)
+                {
+                    return RedirectToAction("Index", "Error", new { error = "from or to cant be negative or zero" });
+                }
+
+                if (from > to)
+                {
+                    return RedirectToAction("Index", "Error", new { error = "from range cant be higer than to" });
+                }
+
+                var products = _productBl.GetProductsByCategory(category)
+                    .Where(p => p.Price <= to && p.Price >= from);
+                return View("Views/Catalog/index.cshtml", products);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
         }
 
         // GET: Catalog

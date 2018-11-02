@@ -1,9 +1,8 @@
 ﻿using Hydra.Data;
 using Hydra.Models;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Hydra.DAL
 {
@@ -18,12 +17,52 @@ namespace Hydra.DAL
 
         public List<Product> GetAllProducts()
         {
-            return _hydraContext.Product.ToList();
+            return _hydraContext
+                .Product
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Publisher)
+                .ToList();
         }
 
         public Product GetProductById(int productId)
         {
-            return _hydraContext.Find<Product>(productId);
+            return _hydraContext.Product
+                                .Include(p => p.Comments)
+                                .ThenInclude(c => c.Publisher)
+                                .FirstOrDefault(x => x.ID == productId);
+        }
+
+        public IEnumerable<Product> GetProductsByCategory(Category category)
+        {
+            return _hydraContext.Product
+                    .Include(p => p.Comments)
+                    .ThenInclude(c => c.Publisher)
+                    .Where(p => p.Category == category)
+                    .AsEnumerable();
+        }
+
+        public void SaveProducts(IEnumerable<Product> products)
+        {  
+            _hydraContext.Product.AddRange(products);
+            _hydraContext.SaveChanges();
+        }
+
+        public void AddComment(int productId, Comment comment)
+        {
+            this.GetProductById(productId).Comments.Add(comment);
+            _hydraContext.SaveChanges();
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            _hydraContext.Product.Update(product);
+            _hydraContext.SaveChanges();
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            _hydraContext.Product.Remove(product);
+            _hydraContext.SaveChanges();
         }
     }
 }

@@ -15,6 +15,20 @@ namespace Hydra.DAL
             _hydraContext = hydraContext;
         }
 
+        public void UpdateStore(Store storeToUpdate)
+        {
+            _hydraContext.Store.Update(storeToUpdate);
+            _hydraContext.SaveChanges();
+        }
+
+        public Store GetStoreById(int id)
+        {
+            return _hydraContext.Store
+                .Include(x => x.Stock)
+                .ThenInclude(y => y.Product)
+                .SingleOrDefault(x => x.ID == id);
+        }
+
         public List<Store> GetAllStores()
         {
             return _hydraContext.Store
@@ -23,11 +37,11 @@ namespace Hydra.DAL
                 .ToList();
         }
 
-        public Store GetStoreById(int storeId)
+        public IEnumerable<Store> GetStoreByName(string name)
         {
             return _hydraContext.Store
-                .Include(x => x.Stock)
-                .SingleOrDefault(store => store.ID == storeId);
+                                .Where(s => s.Name.Contains(name))
+                                .ToList();
         }
 
         public void AddStore(Store store)

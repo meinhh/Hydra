@@ -19,6 +19,29 @@ namespace Hydra.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Hydra.Models.Comment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int?>("ProductID");
+
+                    b.Property<string>("PublisherID");
+
+                    b.Property<string>("Text");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("PublisherID");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("Hydra.Models.Product", b =>
                 {
                     b.Property<int>("ID")
@@ -84,34 +107,42 @@ namespace Hydra.Migrations
 
             modelBuilder.Entity("Hydra.Models.User", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("BirthDate");
+                    b.Property<string>("ID")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("Gender");
 
-                    b.Property<bool>("IsManager");
-
                     b.Property<string>("Name");
-
-                    b.Property<string>("email");
 
                     b.HasKey("ID");
 
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("Hydra.Models.Comment", b =>
+                {
+                    b.HasOne("Hydra.Models.Product")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Hydra.Models.User", "Publisher")
+                        .WithMany()
+                        .HasForeignKey("PublisherID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Hydra.Models.Stock", b =>
                 {
                     b.HasOne("Hydra.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductID");
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Hydra.Models.Store")
                         .WithMany("Stock")
-                        .HasForeignKey("StoreID");
+                        .HasForeignKey("StoreID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

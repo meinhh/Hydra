@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/map.css" />
-        <link rel="stylesheet" href="~/css/CatalogPage.css" />
+        <link rel="stylesheet" href="~/css/catalogStyle.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -34,14 +34,14 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Store" asp-action="Index">Store</a></li>
+                    <li><a asp-area="" asp-controller="About" asp-action="Index">About</a></li>
                     <li><a asp-area="" asp-controller="Catalog" asp-action="Index">Catalog</a></li>
+                    <li><a asp-area="" asp-controller="Admin" asp-action="Index">Admin</a></li>
                 </ul>
                 <div style="float: right" class="fb-login-button navbar-brand" data-max-rows="1"
                      data-size="medium" data-button-type="continue_with" data-show-faces="false"
-                     data-auto-logout-link="true" data-use-continue-as="false"></div>
+                     data-auto-logout-link="true" data-use-continue-as="false"
+                     onlogin="checkLoginState()"></div>
             </div>
         </div>
     </nav>

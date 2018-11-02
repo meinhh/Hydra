@@ -19,6 +19,7 @@ function getMap() {
     infobox.setMap(map);
     Microsoft.Maps.loadModule(['Microsoft.Maps.Search', 'Microsoft.Maps.SpatialDataService', 
         'Microsoft.Maps.SpatialMath'], () => searchManager = new Microsoft.Maps.Search.SearchManager(map));
+    performSearch();
     $('#search-btn').click(performSearch);
     $('#searchBox').keypress((e) => {
         if (e.which == 13) {
@@ -28,26 +29,11 @@ function getMap() {
 }
 
 function performSearch() {
-    clearMap();
-    const geocodeRequest = {
-        where: $('#search-box')[0].value,
-        count: 1,
-        callback: (r) => {
-            if (!r || !r.results ||
-                r.results.length === 0 ||
-                !r.results[0].location) {
-                    showErrorMsg('Unable to geocode query');
-                    return;
-            }
-
-            findNearbyLocations(r.results[0].location);
-        },
-        errorCallback: () => {
-            showErrorMsg('Unable to geocode query');
-        }
-    };
-
-    searchManager.geocode(geocodeRequest);
+    $.ajax({
+        url: '/About/GetStoresByName?name=' + $('#search-box')[0].value,
+        type: 'GET',
+    }).done(data => showStores(data))
+      .fail(() => showErrorMsg('failed getting data'));
 }
 
 function showErrorMsg(msg) {
@@ -55,116 +41,72 @@ function showErrorMsg(msg) {
     $('#results-panel').html(html);
 }
 
-function clearMap() {
-    dataLayer.clear();
-    infobox.setOptions({ visible: false });
-    $('#results-panel').html('');
-}
+function showStores(stores) {
+    if (!stores || stores.length === 0)
+        return;
 
-function findNearbyLocations(location) {
-    const queryOptions = {
-        queryUrl: dataSourceUrl,
-        spatialFilter: {
-            spatialFilterType: 'nearby',
-            location: location,
-            radius: 20
-        },
-        top: 10
-    };
+    showStoresOnMap(stores);
 
-    Microsoft.Maps.SpatialDataService.QueryAPIManager.search(queryOptions, map, (results) => {
-        const locs = [], listItems = [];
-
-        results.forEach((res, i) => {
-            res.setOptions({
-                icon: '../images/red_pin.png',
-                text: (i + 1) + ''
-            });
-            locs.push(res.getLocation());
-            listItems.push('<table class="listItem"><tr><td rowspan="3"><span>', (i + 1), '.</span></td>');
-            const metadata = results[i].metadata;
-            listItems.push('<td><a class="title" href="javascript:void(0);" rel="', metadata.ID, '">', metadata.Name, '</a></td>');
-            listItems.push('<td>', convertSdsDistance(metadata.__Distance), ' ', distanceUnits, '</td></tr>');
-            listItems.push('<tr><td colspan="2" class="listItem-address">', metadata.AddressLine, '<br/>', metadata.Locality, ', ');
-            listItems.push(metadata.AdminDistrict, '<br/>', metadata.PostalCode, '</td></tr>');
-            listItems.push('<tr><td colspan="2"><a target="_blank" href="http://bing.com/maps/default.aspx?rtp=~pos.', 
-                metadata.Latitude, '_', metadata.Longitude, '_', encodeURIComponent(metadata.Name), '">Directions</a></td></tr>');
-            listItems.push('</table>');
+    window.navigator.geolocation.getCurrentPosition(userPosition => {
+        const itemsPromises = stores.map(async (store, i) => {
+            const temp = await $.ajax({ 
+                url: `/About/GetTemprature?lot=${store.latitude}&lat=${store.latitude}`, 
+                type: 'GET' });
+            return [
+                `<table class="listItem"><tr>`,
+                `<td><span onclick="zoomOnMap(${store.latitude}, ${store.lontitude})" class="title">${store.name}</span></td></tr>`,
+                `<tr><td>Distance: ${distance(userPosition.coords.longitude, userPosition.coords.latitude, 
+                    store.lontitude, store.latitude)} ${distanceUnits}</td></tr>`,
+                `<tr><td>Temprature: ${temp} °C</tr>`,
+                `<tr><td>Opening Hours: ${store.openingHour}-${store.closingHour}</tr>`,
+                `<tr><td><a href="/Store/Edit/${store.id}">Edit</a><a href="/Store/Delete/${store.id}">Delete</a></td></tr>`,
+                `</table>`,
+            ].join('');
         });
 
-        dataLayer.add(results);
-        if (locs.length > 1)
-            map.setView({ bounds: Microsoft.Maps.LocationRect.fromLocations(locs), padding: 80 });
-        else 
-            map.setView({ center: locs[0], zoom: 15 });
-        
-        const resultsPanel = $('#results-panel');
-        resultsPanel.html(listItems.join(''));
-        const resultItems = resultsPanel.find('.title').each((i, element) => 
-            $(element).click(resultClicked)
-        );
+        Promise.all(itemsPromises).then(items => {
+            const resultsPanel = $('#results-panel');
+            resultsPanel.html(items.join(''));
+        });
     });
 }
 
-function resultClicked(e) {
-    const id = e.target.getAttribute('rel');
-    const pins = dataLayer.getPrimitives();
-    for (var i = 0; i < pins.length; i++) {
-        var pin = pins[i];
-        if (pin.metadata.ID !== id) {
-            pin = null;
-        }
-        else {
-            break;
-        }
-    }
-
-    if (!pin) 
-        return;
-
-    map.setView({ center: pin.getLocation(), zoom: 17 });
-    displayInfobox(pin);
+function clearMap() {
+    map.entities.clear();   
+    $('#results-panel').html(''); 
 }
 
-function displayInfobox(pin) {
-    const metadata = pin.metadata;
-    const desc = [
-        '<table>',
-        '<tr><td colspan="2">', metadata.AddressLine, ', ', metadata.Locality, ', ',
-        metadata.AdminDistrict, ', ', metadata.PostalCode, '</td></tr>',
-        '<tr><td><b>Hours:</b></td><td>', formatTime(metadata.Open), ' - ', formatTime(metadata.Close), '</td></tr>',
-        '<tr><td><b>Store Type:</b></td><td>', metadata.StoreType, '</td></tr>',
-        '<tr><td><b>Has Wifi:</b></td><td>', (metadata.IsWiFiHotSpot) ? 'Yes' : 'No', '</td></tr>',
-        '<tr><td colspan="2"><a target="_blank" href="http://bing.com/maps/default.aspx?rtp=~pos.', metadata.Latitude, '_', metadata.Longitude, '_', encodeURIComponent(metadata.Name), '">Directions</a></td></tr>',
-        '</table>'];
-    infobox.setOptions({ visible: true, location: pin.getLocation(), title: metadata.Name, description: desc.join('') });
+function showStoresOnMap(stores) {
+    const locations = stores.map(store => {
+        const loc = new Microsoft.Maps.Location(store.latitude, store.lontitude);
+        const pin = new Microsoft.Maps.Pushpin(loc);
+        Microsoft.Maps.Events.addHandler(pin, 'click', () => window.location = `/Catalog/ByStore/${store.id}` );
+        map.entities.push(pin);
+
+        return loc;
+    });
+
+    const bounds = Microsoft.Maps.LocationRect.fromLocations(locations);
+    map.setView({bounds:bounds, padding: 100});
 }
 
-function formatTime(val) {
-    let minutes = val % 100;
-    const hours = Math.round(val / 100);
-    if (minutes == 0) 
-        minutes = '00';
-
-    return hours > 12 ?
-        (hours - 12) + ':' + minutes + 'PM' :
-        hours + ':' + minutes + 'AM';
+function zoomOnMap(lat, lon) {
+    const loc = new Microsoft.Maps.Location(lat, lon);
+    map.setView({ center: loc, zoom: 15 });
 }
 
-function convertSdsDistance(distance) {
-    let toUnits;
-    switch (distanceUnits.toLowerCase()) {
-        case 'mi':
-        case 'miles':
-            toUnits = Microsoft.Maps.SpatialMath.DistanceUnits.Miles;
-            break;
-        case 'km':
-        case 'kilometers':
-        default:
-            toUnits = Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers;
-            break;
-    }
-    let d = Microsoft.Maps.SpatialMath.convertDistance(distance, Microsoft.Maps.SpatialMath.DistanceUnits.Kilometers, toUnits);
-    d = Math.round(d * 100) / 100;
-    return d;
+function toRad(num) {
+    return num * Math.PI / 180;
+}
+
+function distance(lon1, lat1, lon2, lat2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = toRad(lat2-lat1);
+  var dLon = toRad(lon2-lon1); 
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d.toFixed(2);
 }

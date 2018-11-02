@@ -1,0 +1,35 @@
+﻿
+<h1>@Html.ActionLink("Open Statistics Page", "GetStatistics", "Statistics")</h1>
+<h1>@Html.ActionLink("Add Prodcut Page", "Create", "Product")</h1>
+<h1>@Html.ActionLink("Add Store Page", "Create", "Store")</h1>
+
+<section>
+    <h2>Search for users comments</h2>
+    <form asp-action="Search" asp-controller="Admin" method="get">
+        <div class="form-group">
+            <label class="control-label">Start date</label>
+            <input type="date" name="start" value="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">End date</label>
+            <input type="date" name="end" value="" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">User name</label>
+            <select name="userId" class="form-control">
+                @foreach (var user in ViewBag.users as IEnumerable<User>)
+                {
+                    <option value="@user.ID">@user.Name</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Search!" class="btn btn-success" />
+        </div>
+    </form>
+</section>
+
+@using (Html.BeginForm("Logout", "Admin"))
+{
+    <input type="submit" class="btn btn-danger" value="Logout" />
+}

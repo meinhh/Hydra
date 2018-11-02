@@ -2,4 +2,27 @@
     ViewData["Title"] = "Home Page";
 }
 
-@Html.Partial("ProductsCarousel");
+<div class="jumbotron">
+    <h1>Hydra pop!</h1>
+    <p>In Hydra pop you can find all of the figures you have ever wanted!</p>
+</div>
+
+<div style="margin: 35px">
+    @Html.Partial("ProductsCarousel")
+</div>
+
+<section class="center-block text-center" style="margin: 50px;">
+    <video controls autoplay width="500">
+        <source src="~/videos/video.mp4" type=video/mp4 />
+    </video>
+</section>
+
+
+<div style="margin: 25px;" class="center-block text-center">
+    @Html.Partial("Category")
+</div>
+
+<section>
+    @Html.Partial("ProductsSearch")
+</section>
+    

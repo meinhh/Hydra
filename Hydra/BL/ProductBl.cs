@@ -1,10 +1,7 @@
 ﻿using Hydra.DAL;
 using Hydra.Data;
 using Hydra.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Hydra.BL
 {
@@ -25,6 +22,31 @@ namespace Hydra.BL
         public Product GetProductById(int productId)
         {
             return _productDataAccess.GetProductById(productId);
+        }
+
+        public IEnumerable<Product> GetProductsByCategory(Category category)
+        {
+            return _productDataAccess.GetProductsByCategory(category);
+        }
+
+        public void SaveProducts(IEnumerable<Product> products)
+        {
+            _productDataAccess.SaveProducts(products);
+        }
+
+        public void SaveProdcut(Product product)
+        {
+            _productDataAccess.SaveProducts(new List<Product> { product });
+        }
+
+        public void UpdateProduct(Product product)
+        {
+            _productDataAccess.UpdateProduct(product);
+        }
+
+        public void DeleteProduct(Product product)
+        {
+            _productDataAccess.DeleteProduct(product);
         }
     }
 }

@@ -8,50 +8,17 @@ namespace Hydra.Data
 		public HydraContext(DbContextOptions<HydraContext> options)
 			: base(options)
 		{
-            Database.Migrate();
-            //this.Database.EnsureDeleted();
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
+            //Database.Migrate();
         }
 
-		public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Product { get; set; }
         public DbSet<Store> Store { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Comment> Comment { get; set; }
+        public DbSet<Stock> Stock { get; set; }
 
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<User>(entity =>
-        //    {
-        //        entity.HasKey(x => x.ID);
-        //    });
-
-        //    modelBuilder.Entity<Employee>(entity =>
-        //    {
-        //        entity.HasKey(x => x.ID);
-
-        //        entity.HasOne<Store>(x => x.Store)
-        //            .WithMany(x => x.Employees)
-        //            .OnDelete(DeleteBehavior.Cascade)
-        //            .HasConstraintName("EMPLOYEE_STORE_FK");
-        //    });
-
-        //    modelBuilder.Entity<Product>(entity =>
-        //    {
-        //        entity.HasKey(x => x.ID);
-        //        entity.Property(x => x.ID).ValueGeneratedOnAdd();
-        //    });
-
-        //    modelBuilder.Entity<Store>(entity =>
-        //    {
-        //        entity.HasKey(x => x.ID);
-        //    });
-
-        //    modelBuilder.Entity<Order>(entity =>
-        //    {
-        //        entity.HasKey(x => x.ID);
-
-        //        entity.HasMany<Product>(x => x.ProductsInStore);
-        //    });
-
-        //}
     }
 }
