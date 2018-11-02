@@ -20,6 +20,10 @@ namespace Hydra.BL
             return _storeDataAccess.GetAllStores();
         }
 
+        public Store GetStoreById(int id)
+        {
+            return _storeDataAccess.GetStoreById(id);
+        }
         public IEnumerable<Store> GetStoreByName(string name)
         {
             return _storeDataAccess.GetStoreByName(name);

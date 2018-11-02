@@ -1,0 +1,14 @@
+﻿/* Item Box */
+.product-item-box {
+    border:solid;
+    margin-bottom:10px;
+    text-align : center;
+}
+.product-item-image{
+    height: 300px;
+    width: 300px;
+}
+.store-select-box{
+    margin-top: 10px;
+    text-size-adjust:auto;
+}

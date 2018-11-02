@@ -31,6 +31,7 @@ namespace Hydra
             //{
             //    Password = Configuration["Secret:DbPassword"]
             //};
+      
             services.AddDbContext<HydraContext>(options =>
                                                 options.UseSqlServer(builder.ConnectionString));
 
