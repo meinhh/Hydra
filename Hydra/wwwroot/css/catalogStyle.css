@@ -1,0 +1,10 @@
+﻿.product-item-box {
+    border:hidden;
+    margin-bottom: 10px;
+    align-content: center;
+}
+
+.product-item-img {
+    height: 300px;
+    width: 300px;
+}

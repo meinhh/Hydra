@@ -19,8 +19,8 @@
     @{
         foreach (var currProduct in Model)
         {
-            <div style="border:hidden; margin-bottom:10px" align="center" class="col-lg-4 col-md-4 col-xs-4 thumb">
-                <img class="img-responsive" src=@Html.DisplayFor(model => currProduct.ImageUrl) alt="img1" style="height:300px;width:300px">
+            <div class="product-item-box col-lg-4 col-md-4 col-xs-4 thumb">
+                <img class="product-item-img" src=@Html.DisplayFor(model => currProduct.ImageUrl) alt="img1">
                 <p>
                     @Html.ActionLink(currProduct.Name, "Details", "Product", new { id = currProduct.ID })
                 </p>

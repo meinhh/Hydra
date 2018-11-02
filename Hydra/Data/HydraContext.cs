@@ -10,7 +10,7 @@ namespace Hydra.Data
 		{
             //Database.EnsureDeleted();
             //Database.EnsureCreated();
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         public DbSet<Product> Product { get; set; }
