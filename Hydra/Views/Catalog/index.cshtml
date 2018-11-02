@@ -5,17 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<select id="storeRole" class="form-control" name="storeRole">
-    @{
-        foreach (Store currStore in ViewBag.stores)
-        {
-            <option value="@currStore.ID">@currStore.Name</option>
-        }
-    }
-</select>
 <h2>All products in the catalog</h2>
+
+@Html.DropDownList("StoreName", new SelectList(((List<Store>)ViewBag.stores).Select(s => s.Name)), "Select Store", new { onchange = "this.form.submit();" })
+
 <div class="row">
     @{
+
         foreach (var currProduct in Model)
         {
             <div class="product-item-box col-lg-4 col-md-4 col-xs-4 thumb">

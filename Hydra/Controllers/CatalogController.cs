@@ -27,9 +27,26 @@ namespace Hydra.Controllers
         // GET: Catalog
         public ActionResult Index()
         {
+            // put the stores in the view bag, so we can use them later
             ViewBag.stores = _storeBl.GetAllStores();
             return View(_productBl.GetAllProducts());
         }
+
+        [HttpPost]
+        public ActionResult GetProductsByStoreName(string name)
+        {
+            List<Store> stores = _storeBl.GetAllStores();
+            List<Product> filteredProducts = new List<Product>();
+            Store choosenStore = stores.Find(s => s.Name == name);
+
+            foreach (Stock currStoke in choosenStore.Stock)
+            {
+                filteredProducts.Add(currStoke.Product);
+            }
+
+            return View(filteredProducts);
+        }
+
 
         // GET: Catalog
         public ActionResult GetAllStores()
