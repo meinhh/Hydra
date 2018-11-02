@@ -137,11 +137,9 @@ namespace Hydra.Controllers
             try
             {
                 var store = _storeBl.GetStoreById(id);
-                if (store == null)
-                {
-                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find store with id {0}", id) });
-                }
-                return View(store);
+                return store == null
+                    ? RedirectToAction("Index", "Error", new { error = string.Format("Could not find store with id {0}", id) })
+                    : (ActionResult)View(store);
             }
             catch
             {

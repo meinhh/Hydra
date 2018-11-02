@@ -59,6 +59,7 @@ function showStores(stores) {
                     store.lontitude, store.latitude)} ${distanceUnits}</td></tr>`,
                 `<tr><td>Temprature: ${temp} °C</tr>`,
                 `<tr><td>Opening Hours: ${store.openingHour}-${store.closingHour}</tr>`,
+                `<tr><td><a href="/Store/Edit/${store.id}">Edit</a><a href="/Store/Delete/${store.id}">Delete</a></td></tr>`,
                 `</table>`,
             ].join('');
         });
@@ -79,6 +80,7 @@ function showStoresOnMap(stores) {
     const locations = stores.map(store => {
         const loc = new Microsoft.Maps.Location(store.latitude, store.lontitude);
         const pin = new Microsoft.Maps.Pushpin(loc);
+        Microsoft.Maps.Events.addHandler(pin, 'click', () => window.location = `/Catalog/ByStore/${store.id}` );
         map.entities.push(pin);
 
         return loc;

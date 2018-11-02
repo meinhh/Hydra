@@ -2,6 +2,7 @@
 using Hydra.Data;
 using Hydra.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hydra.BL
 {
@@ -22,6 +23,11 @@ namespace Hydra.BL
         public IEnumerable<Store> GetStoreByName(string name)
         {
             return _storeDataAccess.GetStoreByName(name);
+        }
+
+        public IEnumerable<Product> GetProductsByStoreId(int id)
+        {
+            return _storeDataAccess.GetStoreById(id).Stock.Select(s => s.Product);
         }
 
         public void AddStore(Store store)
