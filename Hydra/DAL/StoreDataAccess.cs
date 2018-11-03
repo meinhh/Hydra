@@ -24,16 +24,12 @@ namespace Hydra.DAL
         public Store GetStoreById(int id)
         {
             return _hydraContext.Store
-                .Include(x => x.Stock)
-                .ThenInclude(y => y.Product)
                 .SingleOrDefault(x => x.ID == id);
         }
 
         public List<Store> GetAllStores()
         {
             return _hydraContext.Store
-                .Include(x => x.Stock)
-                .ThenInclude(y => y.Product)
                 .ToList();
         }
 
@@ -47,7 +43,6 @@ namespace Hydra.DAL
         public Store GetStroeById(int storeId)
         {
             return _hydraContext.Store
-                .Include(x => x.Stock)
                 .SingleOrDefault(store => store.ID == storeId);
         }
 

@@ -24,8 +24,8 @@ namespace Hydra.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Message"] = "Hail Hydra";
-            ViewData["ShareUrl"] = "https://www.quertime.com/article/how-facebook-steals-sells-your-private-information/";
+            ViewData["Message"] = "Hydra pop";
+            ViewData["ShareUrl"] = "https://www.google.com";
             ViewData["MapCredantials"] = _secrets.MapCredantials;
 
             return View();

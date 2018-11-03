@@ -16,7 +16,5 @@ namespace Hydra.Models
         public string OpeningHour { get; set; }
 
         public string ClosingHour { get; set; }
-
-        public ICollection<Stock> Stock { get; set; }
 	}
 }

@@ -80,7 +80,8 @@ function showStoresOnMap(stores) {
     const locations = stores.map(store => {
         const loc = new Microsoft.Maps.Location(store.latitude, store.lontitude);
         const pin = new Microsoft.Maps.Pushpin(loc);
-        Microsoft.Maps.Events.addHandler(pin, 'click', () => window.location = `/Catalog/ByStore/${store.id}` );
+        //Microsoft.Maps.Events.addHandler(pin, 'click', () => window.location = `/Catalog/ByStore/${store.id}` );
+        Microsoft.Maps.Events.addHandler(pin, 'click', () => window.location = `/Store/ById/${store.id}`);
         map.entities.push(pin);
 
         return loc;

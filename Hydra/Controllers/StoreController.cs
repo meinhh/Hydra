@@ -27,6 +27,11 @@ namespace Hydra.Controllers
             return View(_storeBl.GetAllStores());
         }
 
+        public ActionResult ById(int id)
+        {
+            return View("Views/Store/ByStoreId.cshtml", _storeBl.GetStoreById(id));
+        }
+
         // GET: Store/Details/5
         public ActionResult Details(int id)
         {

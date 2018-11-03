@@ -94,20 +94,7 @@ namespace Hydra.Controllers
                 ClosingHour = "22:00",
                 OpeningHour = "12:00",
                 Latitude = 32.074031,
-                Lontitude = 34.792868,
-                Stock = new List<Stock>
-                {
-                    new Stock
-                    {
-                        Product = mickeyMouse,
-                        Quantity = 5
-                    },
-                    new Stock
-                    {
-                        Product = allisonHendrix,
-                        Quantity = 24
-                    }
-                }
+                Lontitude = 34.792868
             };
 
             var jerusalem = new Store
@@ -116,25 +103,7 @@ namespace Hydra.Controllers
                 ClosingHour = "22:00",
                 OpeningHour = "12:00",
                 Latitude = 31.777820,
-                Lontitude = 35.209204,
-                Stock = new List<Stock>
-                {
-                    new Stock
-                    {
-                        Product = freddyKrueger,
-                        Quantity = 5
-                    },
-                    new Stock
-                    {
-                        Product = mickeyMouse,
-                        Quantity = 5
-                    },
-                    new Stock
-                    {
-                        Product = ironMan,
-                        Quantity = 12
-                    }
-                }
+                Lontitude = 35.209204
             };
 
             var eilat = new Store
@@ -143,20 +112,7 @@ namespace Hydra.Controllers
                 ClosingHour = "22:00",
                 OpeningHour = "12:00",
                 Latitude = 29.556008,
-                Lontitude = 34.961806,
-                Stock = new List<Stock>
-                {
-                    new Stock
-                    {
-                        Product = mickeyMouse,
-                        Quantity = 125
-                    },
-                    new Stock
-                    {
-                        Product = batGirl,
-                        Quantity = 32
-                    }
-                }
+                Lontitude = 34.961806
             };
 
             var meirav = new User
