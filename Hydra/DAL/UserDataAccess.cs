@@ -28,6 +28,28 @@ namespace Hydra.DAL
             _context.SaveChanges();
         }
 
+        public void UpdateUser(User user)
+        {
+            _context.User.Update(user);
+            _context.SaveChanges();
+        }
+
+        public void DeletUser(User user)
+        {
+            var  userToDelete = _context
+                .User
+                .SingleOrDefault(u => u.ID == user.ID);
+
+            if (userToDelete == null)
+            {
+                throw new
+                    Exception(string.Format("could not find user with id {0}", user.ID));
+            }
+
+            _context.User.Remove(userToDelete);
+            _context.SaveChanges();
+        }
+
         public bool IsUserExist(string id)
         {
             return _context.User.Any(u => u.ID == id);

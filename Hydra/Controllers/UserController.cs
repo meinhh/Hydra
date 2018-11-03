@@ -16,6 +16,120 @@ namespace Hydra.Controllers
             _userBl = new UserBl(context);
         }
 
+        // POST: Product/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(int id, [Bind("ID", "Name", "Gender")] User user)
+        {
+            try
+            {
+                var errorMessage = GetErrorIfInvalid(user);
+
+                if (!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    return RedirectToAction("Index", "Error", new { error = errorMessage });
+                }
+
+                var userToAdd = new User
+                {
+                    ID = user.ID,
+                    Name = user.Name,
+                    Gender = user.Gender
+                };
+
+                _userBl.AddUser(user.ID,user.Name,user.Gender);
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        // POST: Product/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, [Bind("ID", "Name", "Gender")] User user)
+        {
+            try
+            {
+                User userToEdit = _userBl.getById(user.ID);
+
+                if (userToEdit == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
+
+                }
+
+                var errorMessage = GetErrorIfInvalid(userToEdit);
+
+                if (!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    return RedirectToAction("Index", "Error", new { error = errorMessage });
+                }
+
+                userToEdit.Name = user.Name;
+                userToEdit.Gender = user.Gender;
+
+                _userBl.UpdateUser(userToEdit);
+                return View(userToEdit);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        // POST: Product/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(string id, IFormCollection collection)
+        {
+            try
+            {
+                User userToDelete = _userBl.getById(id);
+                try
+                {
+                    _userBl.DeleteUser(userToDelete);
+                }
+                catch
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find user with id {0}", id) });
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error", new { error = string.Format("Oops! failed to delete product with id {0}", id) });
+            }
+        }
+
+
+        private string GetErrorIfInvalid(User user)
+        {
+            var error = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(user.ID))
+            {
+                error = "User Id cant be empty or null";
+            }
+
+            if (string.IsNullOrWhiteSpace(user.Name))
+            {
+                error = "user name cant be empty or null";
+            }
+
+            if (user.Gender != null)
+            {
+                error = "Please Select Gender";
+            }
+            
+
+            return error;
+        }
+
         [HttpGet]
         public void Login(string id, string name)
         {
@@ -44,6 +158,24 @@ namespace Hydra.Controllers
                 : num == 2 
                     ? Gender.Female 
                     : Gender.Other;
+        }
+
+        private bool isValidID(String id)
+        {
+            if (id.Length != 9) { return false; }
+
+            foreach (char currChar in id)
+            {
+                if (currChar < '0' || currChar > '9') { return false; }
+            }
+
+            return true;
+        }
+
+        private bool IsAdminConnected()
+        {
+            var isAdminConnected = HttpContext.Session.GetInt32("IsAdminConnected") ?? 0;
+            return isAdminConnected == 1 ? true : false;
         }
     }
 }

@@ -21,5 +21,20 @@ namespace Hydra.BL
 
             _userDal.AddUser(id, name, gender);
         }
+
+        public void UpdateUser(User user)
+        {
+            _userDal.UpdateUser(user);
+        }
+
+        public void DeleteUser(User user)
+        {
+            _userDal.DeletUser(user);
+        }
+
+        public User getById(string id)
+        {
+            return _userDal.GetUser(id);
+        }
     }
 }
