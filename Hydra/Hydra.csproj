@@ -49,6 +49,8 @@
     <Compile Remove="Migrations\20181019080749_HydraMigration.Designer.cs" />
     <Compile Remove="Migrations\20181020150001_HydraMigration.cs" />
     <Compile Remove="Migrations\20181020150001_HydraMigration.Designer.cs" />
+    <Compile Remove="Migrations\20181027075238_HydraMigration.cs" />
+    <Compile Remove="Migrations\20181027075238_HydraMigration.Designer.cs" />
     <Compile Remove="Views\Admin\Index.cshtml" />
   </ItemGroup>
 

@@ -1,6 +1,8 @@
 ﻿using Hydra.Data;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Hydra.Controllers
@@ -17,11 +19,13 @@ namespace Hydra.Controllers
         }
 
         public PartialViewResult GetStatistics()
-        {    
-            var productsByStore = _hydraContext.Store
-                .Select(s => new { store = s.Name, count = s.Stock.Count() })
-                .ToList();
+        {
 
+            var usersByGender = _hydraContext.User
+                .GroupBy(g => g.Gender)
+                .Select(x => new { gender = x.Key.ToString(), count = x.Count() })
+                .ToList();
+            
             var prodcutsByCategory = _hydraContext.Product
                 .GroupBy(p => p.Category)
                 .Select(x => new { category = x.Key.ToString(), count = x.Count() })
@@ -32,7 +36,7 @@ namespace Hydra.Controllers
                 .Select(x => new { gender = x.Key.ToString(), count = x.Count() });
 
             ViewBag.prodcutsByCategory = JsonConvert.SerializeObject(prodcutsByCategory);
-            ViewBag.productsByStore = JsonConvert.SerializeObject(productsByStore);
+            ViewBag.usersByGender = JsonConvert.SerializeObject(usersByGender);
             ViewBag.commentsByGender = JsonConvert.SerializeObject(commentsByGender);
 
             return PartialView("Views/Statistics/Statistics.cshtml");

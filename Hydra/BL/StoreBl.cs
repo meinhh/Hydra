@@ -25,11 +25,6 @@ namespace Hydra.BL
             return _storeDataAccess.GetStoreByName(name);
         }
 
-        public IEnumerable<Product> GetProductsByStoreId(int id)
-        {
-            return _storeDataAccess.GetStoreById(id).Stock.Select(s => s.Product);
-        }
-
         public void AddStore(Store store)
         {
             _storeDataAccess.AddStore(store);

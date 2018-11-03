@@ -63,27 +63,6 @@ namespace Hydra.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("Hydra.Models.Stock", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ProductID");
-
-                    b.Property<int>("Quantity");
-
-                    b.Property<int?>("StoreID");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("StoreID");
-
-                    b.ToTable("Stock");
-                });
-
             modelBuilder.Entity("Hydra.Models.Store", b =>
                 {
                     b.Property<int>("ID")
@@ -123,26 +102,11 @@ namespace Hydra.Migrations
                 {
                     b.HasOne("Hydra.Models.Product")
                         .WithMany("Comments")
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ProductID");
 
                     b.HasOne("Hydra.Models.User", "Publisher")
                         .WithMany()
-                        .HasForeignKey("PublisherID")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Hydra.Models.Stock", b =>
-                {
-                    b.HasOne("Hydra.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Hydra.Models.Store")
-                        .WithMany("Stock")
-                        .HasForeignKey("StoreID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PublisherID");
                 });
 #pragma warning restore 612, 618
         }

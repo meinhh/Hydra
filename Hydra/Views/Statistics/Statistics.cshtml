@@ -10,8 +10,8 @@
         <h3 class="panel-title">Products by store</h3>
     </div>
     <div class="panel-body">
-        <p>The following pie shows the number of pop figures in each store</p>
-        <p>Hover on the pie to see the name of the store</p>
+        <p>The following pie shows the number of users according to their gender</p>
+        <p>Hover on the pie to see that gender</p>
         <div class="pie"></div>
         <p id="tooltip"></p>
     </div>
@@ -164,7 +164,7 @@
           .on("mouseover", function (d) {
               d3.select('#tooltip')
                 .style("visibility", "visible")
-                  .text(d.data.store);
+                  .text(d.data.gender);
           })
           .on("mousemove", function () {
               d3.select('#tooltip')
@@ -257,8 +257,8 @@
     var commentsByGender = JSON.parse('@Html.Raw(ViewBag.commentsByGender)');
     drawBarChartWithCanvas(commentsByGender);
 
-    var productsByStore = JSON.parse('@Html.Raw(ViewBag.productsByStore)');
-    drawPie(productsByStore);
+    var usersByGender = JSON.parse('@Html.Raw(ViewBag.usersByGender)');
+    drawPie(usersByGender);
 
 
 </script>

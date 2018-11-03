@@ -23,11 +23,6 @@ namespace Hydra.Controllers
             return View("Views/Catalog/index.cshtml", _productBl.GetProductsByCategory(category));
         }
 
-        public ActionResult ByStore(int id)
-        {
-            return View("Views/Catalog/index.cshtml", _storeBl.GetProductsByStoreId(id));
-        }
-
         public ActionResult Search(Category category, double from, double to)
         {
             try

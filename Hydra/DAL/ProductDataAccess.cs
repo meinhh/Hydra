@@ -1,6 +1,7 @@
 ﻿using Hydra.Data;
 using Hydra.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,7 +62,19 @@ namespace Hydra.DAL
 
         public void DeleteProduct(Product product)
         {
-            _hydraContext.Product.Remove(product);
+            var productToDelete = _hydraContext
+                .Product
+                .Include(p => p.Comments)
+                .SingleOrDefault(p => p.ID == product.ID);
+
+            if(productToDelete == null)
+            {
+                throw new 
+                    Exception(string.Format("could not find product with id {0}", product.ID));
+            }
+
+            _hydraContext.Comment.RemoveRange(productToDelete.Comments);
+            _hydraContext.Product.Remove(productToDelete);
             _hydraContext.SaveChanges();
         }
     }

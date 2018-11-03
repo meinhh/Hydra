@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hydra.Migrations
 {
     [DbContext(typeof(HydraContext))]
-    [Migration("20181027075238_HydraMigration")]
+    [Migration("20181103103153_HydraMigration")]
     partial class HydraMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,27 +65,6 @@ namespace Hydra.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("Hydra.Models.Stock", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ProductID");
-
-                    b.Property<int>("Quantity");
-
-                    b.Property<int?>("StoreID");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductID");
-
-                    b.HasIndex("StoreID");
-
-                    b.ToTable("Stock");
-                });
-
             modelBuilder.Entity("Hydra.Models.Store", b =>
                 {
                     b.Property<int>("ID")
@@ -130,17 +109,6 @@ namespace Hydra.Migrations
                     b.HasOne("Hydra.Models.User", "Publisher")
                         .WithMany()
                         .HasForeignKey("PublisherID");
-                });
-
-            modelBuilder.Entity("Hydra.Models.Stock", b =>
-                {
-                    b.HasOne("Hydra.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductID");
-
-                    b.HasOne("Hydra.Models.Store")
-                        .WithMany("Stock")
-                        .HasForeignKey("StoreID");
                 });
 #pragma warning restore 612, 618
         }

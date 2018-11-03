@@ -56,33 +56,6 @@ namespace Hydra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stock",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ProductID = table.Column<int>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false),
-                    StoreID = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stock", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stock_Product_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Product",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Stock_Store_StoreID",
-                        column: x => x.StoreID,
-                        principalTable: "Store",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Comment",
                 columns: table => new
                 {
@@ -101,13 +74,13 @@ namespace Hydra.Migrations
                         column: x => x.ProductID,
                         principalTable: "Product",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comment_User_PublisherID",
                         column: x => x.PublisherID,
                         principalTable: "User",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -119,16 +92,6 @@ namespace Hydra.Migrations
                 name: "IX_Comment_PublisherID",
                 table: "Comment",
                 column: "PublisherID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stock_ProductID",
-                table: "Stock",
-                column: "ProductID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stock_StoreID",
-                table: "Stock",
-                column: "StoreID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -137,16 +100,13 @@ namespace Hydra.Migrations
                 name: "Comment");
 
             migrationBuilder.DropTable(
-                name: "Stock");
-
-            migrationBuilder.DropTable(
-                name: "User");
+                name: "Store");
 
             migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
-                name: "Store");
+                name: "User");
         }
     }
 }
