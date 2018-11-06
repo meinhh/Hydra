@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Hydra.DAL;
 using Hydra.Data;
 using Hydra.Models;
@@ -32,9 +33,14 @@ namespace Hydra.BL
             _userDal.DeletUser(user);
         }
 
-        public User getById(string id)
+        public User GetById(string id)
         {
             return _userDal.GetUser(id);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _userDal.GetAllUsers();
         }
     }
 }

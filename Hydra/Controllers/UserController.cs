@@ -16,7 +16,17 @@ namespace Hydra.Controllers
             _userBl = new UserBl(context);
         }
 
-        // POST: Product/Create
+        public ActionResult Create()
+        {
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
+            }
+
+            return View();
+        }
+
+        // POST: User/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(int id, [Bind("ID", "Name", "Gender")] User user)
@@ -37,9 +47,32 @@ namespace Hydra.Controllers
                     Gender = user.Gender
                 };
 
-                _userBl.AddUser(user.ID,user.Name,user.Gender);
+                _userBl.AddUser(user.ID, user.Name, user.Gender);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Admin");
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
+        } 
+
+        // GET: User/Edit/
+        public ActionResult Edit(string id)
+        {
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
+            }
+            try
+            {
+                User user = _userBl.GetById(id);
+                if (user == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find user with id {0}", id) });
+                }
+
+                return View(user);
             }
             catch
             {
@@ -47,33 +80,33 @@ namespace Hydra.Controllers
             }
         }
 
-        // POST: Product/Edit/5
+        // POST: User/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, [Bind("ID", "Name", "Gender")] User user)
         {
             try
             {
-                User userToEdit = _userBl.getById(user.ID);
-
-                if (userToEdit == null)
-                {
-                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
-
-                }
-
-                var errorMessage = GetErrorIfInvalid(userToEdit);
+                var errorMessage = GetErrorIfInvalid(user);
 
                 if (!string.IsNullOrWhiteSpace(errorMessage))
                 {
                     return RedirectToAction("Index", "Error", new { error = errorMessage });
                 }
 
+                User userToEdit = _userBl.GetById(user.ID);
+
+                if (userToEdit == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find user with id {0}", id) });
+                }
+
                 userToEdit.Name = user.Name;
                 userToEdit.Gender = user.Gender;
 
                 _userBl.UpdateUser(userToEdit);
-                return View(userToEdit);
+
+                return RedirectToAction("Details", "User");
             }
             catch
             {
@@ -81,14 +114,37 @@ namespace Hydra.Controllers
             }
         }
 
-        // POST: Product/Delete/5
+        // GET: User/Delete/
+        public ActionResult Delete(String id)
+        {
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to edit. please go to admin page" });
+            }
+
+            try
+            {
+                User user = _userBl.GetById(id);
+                if (user == null)
+                {
+                    return RedirectToAction("Index", "Error", new { error = string.Format("Could not find user with id {0}", id) });
+                }
+                return View(user);
+            }
+            catch
+            {
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        // POST: User/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(string id, IFormCollection collection)
         {
             try
             {
-                User userToDelete = _userBl.getById(id);
+                User userToDelete = _userBl.GetById(id);
                 try
                 {
                     _userBl.DeleteUser(userToDelete);
@@ -98,7 +154,7 @@ namespace Hydra.Controllers
                     return RedirectToAction("Index", "Error", new { error = string.Format("Could not find user with id {0}", id) });
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", "User");
             }
             catch
             {
@@ -106,21 +162,30 @@ namespace Hydra.Controllers
             }
         }
 
+        public ActionResult Details()
+        {
+            if (!IsAdminConnected())
+            {
+                return RedirectToAction("Index", "Error", new { error = "You must be an admin to view users data. please go to admin page" });
+            }
+
+            return View(_userBl.GetAllUsers());
+        }
 
         private string GetErrorIfInvalid(User user)
         {
             var error = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(user.ID))
-            {
-                error = "User Id cant be empty or null";
-            }
 
             if (string.IsNullOrWhiteSpace(user.Name))
             {
                 error = "user name cant be empty or null";
             }
 
+            if (user.Gender.ToString().Length < 1)
+            {
+                error = "Please Select Gender";
+            }
+            
             return error;
         }
 
@@ -152,18 +217,6 @@ namespace Hydra.Controllers
                 : num == 2 
                     ? Gender.Female 
                     : Gender.Other;
-        }
-
-        private bool isValidID(String id)
-        {
-            if (id.Length != 9) { return false; }
-
-            foreach (char currChar in id)
-            {
-                if (currChar < '0' || currChar > '9') { return false; }
-            }
-
-            return true;
         }
 
         private bool IsAdminConnected()
