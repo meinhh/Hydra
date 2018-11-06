@@ -7,13 +7,13 @@
 
 <div class="panel panel-danger">
     <div class="panel-heading">
-        <h3 class="panel-title">Deleting @Html.DisplayFor(user => user.Name)</h3>
+        <h1 class="panel-title">Deleting @Html.DisplayFor(user => user.Name)</h1>
     </div>
     <div class="panel-body">
         Are you sure you want to delete <strong>@Html.DisplayFor(user => user.Name)</strong>?
         <form asp-action="Delete">
             <input type="submit" value="Delete" class="btn btn-danger" /> |
-            <a asp-action="Index" asp-controller="Catalog">Back to List</a>
+            <a asp-action="Details" asp-controller="User">Back to List</a>
         </form>
     </div>
 </div>

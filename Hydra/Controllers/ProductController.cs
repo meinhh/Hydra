@@ -177,7 +177,7 @@ namespace Hydra.Controllers
                     return RedirectToAction("Index", "Error", new { error = string.Format("Could not find product with id {0}", id) });
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Catalog");
             }
             catch
             {
@@ -217,6 +217,4 @@ namespace Hydra.Controllers
             return isAdminConnected == 1 ? true : false;
         }
     }
-
-
 }
