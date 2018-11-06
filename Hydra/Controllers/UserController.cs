@@ -121,12 +121,6 @@ namespace Hydra.Controllers
                 error = "user name cant be empty or null";
             }
 
-            if (user.Gender != null)
-            {
-                error = "Please Select Gender";
-            }
-            
-
             return error;
         }
 
