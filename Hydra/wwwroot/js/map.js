@@ -1,6 +1,4 @@
 ﻿let map;
-const distanceUnits = 'km',
-    dataSourceUrl = 'https://spatial.virtualearth.net/REST/v1/data/515d38d4d4e348d9a61c615f59704174/CoffeeShops/CoffeeShop';
 
 function getMap() {
     map = new Microsoft.Maps.Map('#store-locations-map', {
@@ -37,13 +35,13 @@ function showStores(stores) {
     window.navigator.geolocation.getCurrentPosition(userPosition => {
         const itemsPromises = stores.map(async (store, i) => {
             const temp = await $.ajax({ 
-                url: `/About/GetTemprature?lot=${store.latitude}&lat=${store.latitude}`, 
+                url: `/About/GetTemprature?lon=${store.lontitude}&lat=${store.latitude}`, 
                 type: 'GET' });
             return [
                 `<table class="listItem"><tr>`,
                 `<td><span onclick="zoomOnMap(${store.latitude}, ${store.lontitude})" class="title">${store.name}</span></td></tr>`,
                 `<tr><td>Distance: ${distance(userPosition.coords.longitude, userPosition.coords.latitude, 
-                    store.lontitude, store.latitude)} ${distanceUnits}</td></tr>`,
+                    store.lontitude, store.latitude)} km</td></tr>`,
                 `<tr><td>Temprature: ${temp} °C</tr>`,
                 `<tr><td>Opening Hours: ${store.openingHour}-${store.closingHour}</tr>`,
                 `<tr><td><a href="/Store/Edit/${store.id}">Edit</a><a href="/Store/Delete/${store.id}">Delete</a></td></tr>`,
