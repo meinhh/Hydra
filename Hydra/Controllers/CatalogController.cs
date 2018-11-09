@@ -47,13 +47,22 @@ namespace Hydra.Controllers
             }
         }
 
+        public ActionResult searchResult(string name)
+        {
+            Category? category = _productBl.NaiveBayesFetchCategoryByName(name);
+            ViewBag.productName = name;
+            ViewBag.category = category;
+
+            return View();
+        }
+
         // GET: Catalog
         public ActionResult Index()
         {
             return View(_productBl.GetAllProducts());
         }
 
-        // GET: Catalog/Details/5
+        // GET: Catalog/Details/
         public ActionResult Details(int id)
         {
             return View();
@@ -82,13 +91,13 @@ namespace Hydra.Controllers
             }
         }
 
-        // GET: Catalog/Edit/5
+        // GET: Catalog/Edit/
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Catalog/Edit/5
+        // POST: Catalog/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -105,13 +114,13 @@ namespace Hydra.Controllers
             }
         }
 
-        // GET: Catalog/Delete/5
+        // GET: Catalog/Delete/
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Catalog/Delete/5
+        // POST: Catalog/Delete/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
