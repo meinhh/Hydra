@@ -50,10 +50,15 @@ namespace Hydra.Controllers
         public ActionResult searchResult(string name)
         {
             Category? category = _productBl.NaiveBayesFetchCategoryByName(name);
-            ViewBag.productName = name;
-            ViewBag.category = category;
+            if(category.HasValue)
+            {
+                ViewBag.productName = name;
+                ViewBag.category = category;
 
-            return View();
+                return View();
+            }
+
+            return RedirectToAction("Index", "Error", new { error = "Oops! search yeald no results" });
         }
 
         // GET: Catalog
