@@ -17,15 +17,6 @@
 }
 
 @{
-    @*foreach (var currProduct in Model)
-    {
-        <div class="product-item-box col-md-4">
-            <img class="product-item-img" src=@Html.DisplayFor(model => currProduct.ImageUrl) alt="img1">
-            <p>
-                @Html.ActionLink(currProduct.Name, "Details", "Product", new { id = currProduct.ID })
-            </p>
-        </div>
-    }*@
         <table>
             @{ for (int row = 0; row < Model.Count() / 3; row++)
                 {
