@@ -47,7 +47,7 @@ namespace Hydra.Controllers
             }
         }
 
-        public ActionResult searchResult(string name)
+        public ActionResult Predict(string name)
         {
             Category? category = _productBl.NaiveBayesFetchCategoryByName(name);
             if(category.HasValue)

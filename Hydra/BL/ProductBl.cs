@@ -51,42 +51,41 @@ namespace Hydra.BL
             _productDataAccess.DeleteProduct(product);
         }
 
-        public Category? NaiveBayesFetchCategoryByName(string Name)
+        public Category? NaiveBayesFetchCategoryByName(string name)
         {
             List<Product> products = _productDataAccess.GetAllProducts();
-            double[] wordFoundArray = new double[Category.GetNames(typeof(Category)).Length];
-            double[] categoryCountArray = new double[Category.GetNames(typeof(Category)).Length];
+            var length = Enum.GetNames(typeof(Category)).Length;
+            var wordsFound = new double[length];
+            var categoryCount = new double[length];
 
             // save in a counter array the number of times the name appeared in each categoty
-            foreach (Product product in products)
+            foreach (var product in products)
             {
-                categoryCountArray[(int)product.Category]++;
+                categoryCount[(int)product.Category]++;
 
-                if (product.Name.ToUpper().Contains(Name.ToUpper()))
+                if (product.Name.ToUpper().Contains(name.ToUpper()))
                 {
-                    wordFoundArray[(int)product.Category]++;
+                    wordsFound[(int)product.Category]++;
                 }
             }
 
             // getting the index of the most fitting category
             double max = 0;
             int maxIndex = 0;
-            for (int i = 0; i < wordFoundArray.Length; i++)
+            for (int i = 0; i < wordsFound.Length; i++)
             {
-                if ((double)(wordFoundArray[i] / categoryCountArray[i]) > max)
+                if (wordsFound[i] / categoryCount[i] > max)
                 {
-                    max = (double)(wordFoundArray[i] / categoryCountArray[i]);
+                    max = wordsFound[i] / categoryCount[i];
                     maxIndex = i;
                 }
             }
 
             if (max == 0)
-            {
                 return null;
-            }
 
             // getting from maxIndex relevent category
-            Category resultCategory = (Category)Category.Parse(typeof(Category), maxIndex.ToString());
+            var resultCategory = (Category)Enum.Parse(typeof(Category), maxIndex.ToString());
 
             return resultCategory;
         }
